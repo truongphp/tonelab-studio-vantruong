@@ -1,7 +1,12 @@
 {
   "name": "tonelab-studio-vantruong",
+  "main": "worker.js",
   "compatibility_date": "2026-11-22",
   "assets": {
-    "directory": "."
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  "ai": {
+    "binding": "AI"
   }
 }
