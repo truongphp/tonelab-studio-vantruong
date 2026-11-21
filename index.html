@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>ToneLab ULTRA • by Văn Trường</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ToneLab" />
+  <meta name="theme-color" content="#09090c" />
+  <link rel="apple-touch-icon" href="https://i.ibb.co/sJmwb3WL/IMG-1730.jpg" />
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
@@ -46,18 +51,22 @@
 
   <!-- Top Brand & Action Header -->
   <header class="shrink-0 h-12 px-2.5 sm:px-3.5 bg-[#101015] border-b border-white/10 flex items-center justify-between gap-1.5 z-20">
-    <div class="flex items-center gap-2 min-w-0">
-      <div class="w-8 h-8 rounded-full bg-white p-0.5 border border-sky-400/60 shadow-md shrink-0 overflow-hidden">
+    <button id="btnOpenCreator" type="button" title="Kênh TikTok & Liên hệ tác giả" class="flex items-center gap-2 min-w-0 text-left rounded-xl pr-1.5 py-0.5 hover:bg-white/5 active:scale-95 transition">
+      <div class="relative w-8 h-8 rounded-full bg-white p-0.5 border border-sky-400/60 shadow-md shrink-0">
         <img src="https://i.ibb.co/sJmwb3WL/IMG-1730.jpg" alt="Shin Logo" class="w-full h-full object-cover rounded-full" />
+        <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-zinc-950 border border-pink-400 flex items-center justify-center text-[8px] font-black text-pink-400">♪</span>
       </div>
       <div class="leading-none min-w-0">
         <div class="flex items-center gap-1">
           <span class="font-extrabold text-[13px] tracking-tight text-white truncate">ToneLab</span>
           <span class="text-[9px] font-bold px-1 py-0.5 rounded bg-gradient-to-r from-sky-400 via-fuchsia-400 to-amber-300 text-zinc-950">ULTRA</span>
         </div>
-        <div class="text-[10px] font-medium text-sky-300/90 truncate mt-0.5">by Văn Trường</div>
+        <div class="text-[10px] font-medium text-sky-300/90 truncate mt-0.5 flex items-center gap-1">
+          <span>by Văn Trường</span>
+          <span class="text-[8.5px] px-1 rounded bg-pink-500/20 text-pink-300 border border-pink-400/30 font-semibold">TikTok</span>
+        </div>
       </div>
-    </div>
+    </button>
 
     <div class="flex items-center gap-1.5 shrink-0">
       <button id="btnAutoMagic" type="button" title="1 chạm tự cân sáng & làm đẹp" class="h-8 px-2 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border border-amber-400/40 text-[11px] font-semibold text-amber-300 flex items-center gap-1 transition">
@@ -96,14 +105,23 @@
           <span id="resLabel" class="text-zinc-400 hidden sm:inline shrink-0"></span>
         </div>
 
-        <div class="pointer-events-auto flex items-center gap-1.5">
+        <div class="pointer-events-auto flex items-center gap-1">
+          <button id="btnGlobalUndo" type="button" title="Hoàn tác (Undo)" class="h-7 w-7 rounded-full bg-black/65 hover:bg-black/80 backdrop-blur-md border border-white/15 text-zinc-300 flex items-center justify-center transition opacity-40" disabled>
+            <i data-lucide="undo-2" class="w-3.5 h-3.5"></i>
+          </button>
+          <button id="btnGlobalRedo" type="button" title="Làm lại (Redo)" class="h-7 w-7 rounded-full bg-black/65 hover:bg-black/80 backdrop-blur-md border border-white/15 text-zinc-300 flex items-center justify-center transition opacity-40" disabled>
+            <i data-lucide="redo-2" class="w-3.5 h-3.5"></i>
+          </button>
+          <button id="btnResetZoom" type="button" title="Đặt lại phóng to" class="hidden h-7 px-2 rounded-full bg-sky-500/85 text-zinc-950 text-[10px] font-bold flex items-center gap-0.5 transition shadow">1x</button>
+          <button id="btnPinA" type="button" title="Ghim màu hiện tại làm A để so sánh chéo với màu B" class="h-7 px-2 rounded-full bg-black/65 hover:bg-black/80 backdrop-blur-md border border-white/15 text-[10.5px] font-semibold text-zinc-200 flex items-center gap-1 transition">
+            <span>A/B</span>
+          </button>
           <button id="btnSplitToggle" type="button" title="So sánh chia đôi Trước / Sau" class="h-7 px-2 rounded-full bg-black/65 hover:bg-black/80 backdrop-blur-md border border-white/15 text-[11px] font-medium text-zinc-200 flex items-center gap-1 transition">
             <i data-lucide="columns-2" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">So sánh</span>
           </button>
           <button id="btnHoldCompare" type="button" title="Giữ để xem ảnh gốc" class="h-7 px-2 rounded-full bg-black/65 hover:bg-black/80 backdrop-blur-md border border-white/15 text-[11px] font-medium text-zinc-200 flex items-center gap-1 transition">
             <i data-lucide="eye" class="w-3.5 h-3.5"></i>
-            <span>Gốc</span>
+            <span class="hidden sm:inline">Gốc</span>
           </button>
         </div>
       </div>
@@ -124,8 +142,8 @@
               <i data-lucide="move-horizontal" class="w-4 h-4"></i>
             </div>
           </div>
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[10px] font-semibold text-zinc-200">TRƯỚC</span>
-          <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-sky-500/85 text-[10px] font-semibold text-zinc-950">SAU</span>
+          <span id="splitLeftLabel" class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-[10px] font-semibold text-zinc-100 max-w-[44%] truncate">TRƯỚC</span>
+          <span id="splitRightLabel" class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-sky-500/90 text-[10px] font-semibold text-zinc-950 max-w-[44%] truncate">SAU</span>
         </div>
       </div>
 
@@ -142,29 +160,58 @@
           <div id="categoryBar" class="shrink-0 px-2.5 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar border-b border-white/5"></div>
 
           <!-- Pro Quick Action Row -->
-          <div class="shrink-0 px-2.5 py-1.5 bg-[#16161c] border-b border-white/5 flex items-center gap-1.5">
-            <label for="refColorInput" title="Hút màu từ ảnh mẫu bất kỳ" class="h-7 px-2 rounded-md bg-fuchsia-500/15 hover:bg-fuchsia-500/25 border border-fuchsia-400/40 text-[10px] font-semibold text-fuchsia-300 flex items-center gap-1 cursor-pointer shrink-0">
-              <i data-lucide="pipette" class="w-3 h-3"></i><span>Hút màu</span>
-            </label>
-            <input id="refColorInput" type="file" accept="image/*" class="hidden" />
+          <div class="shrink-0 px-2.5 py-1.5 bg-[#16161c] border-b border-white/5 space-y-1.5">
+            <div class="flex items-center justify-between gap-1.5">
+              <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+                <label for="refColorInput" title="Hút màu từ ảnh mẫu bất kỳ" class="h-7 px-2 rounded-md bg-fuchsia-500/15 hover:bg-fuchsia-500/25 border border-fuchsia-400/40 text-[10px] font-semibold text-fuchsia-300 flex items-center gap-1 cursor-pointer shrink-0">
+                  <i data-lucide="pipette" class="w-3 h-3"></i><span>Hút màu</span>
+                </label>
+                <input id="refColorInput" type="file" accept="image/*" class="hidden" />
 
-            <label for="lutFileInput" title="Nạp file Lightroom .XMP hoặc 3D LUT .CUBE" class="h-7 px-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-[10px] font-semibold text-emerald-300 flex items-center gap-1 cursor-pointer shrink-0">
-              <i data-lucide="file-code-2" class="w-3 h-3"></i><span>.XMP/.CUBE</span>
-            </label>
-            <input id="lutFileInput" type="file" accept=".xmp,.cube,.xml,.txt" class="hidden" />
+                <label for="lutFileInput" title="Nạp file Lightroom .XMP hoặc 3D LUT .CUBE" class="h-7 px-2 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-[10px] font-semibold text-emerald-300 flex items-center gap-1 cursor-pointer shrink-0">
+                  <i data-lucide="file-code-2" class="w-3 h-3"></i><span>.XMP/.CUBE</span>
+                </label>
+                <input id="lutFileInput" type="file" accept=".xmp,.cube,.xml,.txt" class="hidden" />
 
-            <button id="btnOpenRecipe" type="button" title="Thẻ QR Công thức, Lưu Preset & Xuất .CUBE" class="h-7 px-2 rounded-md bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-[10px] font-semibold text-sky-300 flex items-center gap-1 shrink-0">
-              <i data-lucide="qr-code" class="w-3 h-3"></i><span>Thẻ QR</span>
-            </button>
+                <button id="btnOpenRecipe" type="button" title="Thẻ QR Công thức, Link chia sẻ & Xuất .CUBE" class="h-7 px-2 rounded-md bg-sky-500/15 hover:bg-sky-500/25 border border-sky-400/40 text-[10px] font-semibold text-sky-300 flex items-center gap-1 shrink-0">
+                  <i data-lucide="qr-code" class="w-3 h-3"></i><span>QR/Link</span>
+                </button>
 
-            <div class="flex items-center gap-1 flex-1 min-w-0 pl-0.5">
-              <input id="sliderIntensity" type="range" min="0" max="100" value="100" class="flex-1 min-w-0" />
-              <span id="valIntensity" class="text-[10px] font-semibold text-sky-400 w-7 text-right shrink-0">100%</span>
+                <button id="btnToggleToneTune" type="button" title="Mở thanh tinh chỉnh nhanh Sáng/Tương phản/Ấm/Màu" class="h-7 px-2 rounded-md bg-white/10 hover:bg-white/15 border border-white/15 text-[10px] font-semibold text-zinc-200 flex items-center gap-1 shrink-0 transition">
+                  <i data-lucide="sliders" class="w-3 h-3 text-sky-400"></i><span>Tinh chỉnh</span>
+                </button>
+              </div>
+
+              <button id="btnToggleFavFilter" type="button" class="h-7 px-2 rounded-md bg-black/40 border border-white/10 text-[10px] text-zinc-300 flex items-center gap-1 shrink-0">
+                <i data-lucide="heart" class="w-3 h-3 text-rose-400"></i><span id="favCountBadge">0</span>
+              </button>
             </div>
 
-            <button id="btnToggleFavFilter" type="button" class="h-7 px-1.5 rounded-md bg-black/40 border border-white/10 text-[10px] text-zinc-300 flex items-center gap-0.5 shrink-0">
-              <i data-lucide="heart" class="w-3 h-3 text-rose-400"></i><span id="favCountBadge">0</span>
-            </button>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] text-zinc-400 font-medium shrink-0">Độ mạnh</span>
+              <input id="sliderIntensity" type="range" min="0" max="100" value="100" class="flex-1 min-w-0" />
+              <span id="valIntensity" class="text-[10px] font-semibold text-sky-400 w-8 text-right shrink-0">100%</span>
+            </div>
+          </div>
+
+          <!-- Collapsible Quick Tone Fine-Tune Sliders -->
+          <div id="toneQuickTuneBar" class="hidden shrink-0 px-3 py-2 bg-[#14141b] border-b border-white/10 grid grid-cols-2 gap-x-3 gap-y-1.5">
+            <div class="space-y-0.5">
+              <div class="flex justify-between text-[10px]"><span class="text-zinc-300">Phơi sáng</span><span id="qtVal_exposure" class="text-sky-400 font-semibold">0</span></div>
+              <input type="range" data-qt-key="exposure" min="-100" max="100" value="0" class="qt-slider w-full" />
+            </div>
+            <div class="space-y-0.5">
+              <div class="flex justify-between text-[10px]"><span class="text-zinc-300">Tương phản</span><span id="qtVal_contrast" class="text-sky-400 font-semibold">0</span></div>
+              <input type="range" data-qt-key="contrast" min="-100" max="100" value="0" class="qt-slider w-full" />
+            </div>
+            <div class="space-y-0.5">
+              <div class="flex justify-between text-[10px]"><span class="text-zinc-300">Ấm / Lạnh</span><span id="qtVal_temp" class="text-sky-400 font-semibold">0</span></div>
+              <input type="range" data-qt-key="temp" min="-100" max="100" value="0" class="qt-slider w-full" />
+            </div>
+            <div class="space-y-0.5">
+              <div class="flex justify-between text-[10px]"><span class="text-zinc-300">Bão hòa màu</span><span id="qtVal_sat" class="text-sky-400 font-semibold">0</span></div>
+              <input type="range" data-qt-key="sat" min="-100" max="100" value="0" class="qt-slider w-full" />
+            </div>
           </div>
 
           <!-- Active Color Match / .CUBE LUT Banner -->
@@ -189,9 +236,10 @@
           <!-- Sub: Skin & HD -->
           <div id="subBeautySkin" class="flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-zinc-200">Làm đẹp da & Phục hồi nét HD</span>
+              <span class="text-xs font-semibold text-zinc-200">Combo 1 chạm & Tùy chỉnh da</span>
               <button id="btnResetBeauty" type="button" class="text-[11px] text-sky-400 font-medium">Đặt lại</button>
             </div>
+            <div id="beautyComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
             <div id="beautySlidersContainer" class="space-y-2.5"></div>
           </div>
 
@@ -236,11 +284,12 @@
         </div>
 
         <!-- TAB 3: HSL PRO 8 KÊNH -->
-        <div id="panelHsl" class="hidden flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-3">
+        <div id="panelHsl" class="hidden flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-2.5">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold text-zinc-200">HSL 8 Kênh Màu Độc Lập (Pro)</span>
             <button id="btnResetHsl" type="button" class="text-[11px] text-sky-400 font-medium">Đặt lại HSL</button>
           </div>
+          <div id="hslComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
           <div id="hslChannelBar" class="flex items-center justify-between gap-1 bg-black/40 p-2 rounded-xl border border-white/10"></div>
           <div class="space-y-3 pt-1">
             <div class="space-y-1">
@@ -273,6 +322,7 @@
               <input id="inputTextColor" type="color" value="#ffffff" title="Màu chữ" class="col-span-2 h-8 w-full rounded-lg bg-black/50 border border-white/15 p-0.5 cursor-pointer" />
               <button id="btnToggleTextLayer" type="button" class="col-span-3 h-8 rounded-lg bg-white/10 border border-white/15 text-[10px] font-semibold text-sky-300 truncate px-1">Trên ảnh</button>
             </div>
+            <div id="textComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
             <div id="fontListBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
             <div class="flex items-center gap-1.5">
               <div id="textEffectBar" class="flex items-center gap-1 flex-1"></div>
@@ -368,21 +418,23 @@
 
           <div id="subEffFilm" class="flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-zinc-200">Hiệu ứng Nàng Thơ & Film</span>
+              <span class="text-xs font-semibold text-zinc-200">Combo 1 chạm & Hiệu ứng Film</span>
               <button id="btnResetEffects" type="button" class="text-[11px] text-sky-400 font-medium">Đặt lại</button>
             </div>
-            <div id="effectsSlidersContainer" class="space-y-2.5"></div>
+            <div id="effComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
+            <div id="effectsSlidersContainer" class="space-y-2.5 pb-2"></div>
           </div>
 
-          <div id="subEffLight" class="hidden flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-3">
+          <div id="subEffLight" class="hidden flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-2.5">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-semibold text-zinc-200">Đèn Studio 3D (Relighting GPU)</span>
+              <span class="text-xs font-semibold text-zinc-200">Đèn Studio 3D (Chạm ảnh để kéo đèn)</span>
               <label class="inline-flex items-center gap-1.5 cursor-pointer text-xs text-sky-300 font-semibold">
                 <input id="toggleLight3D" type="checkbox" class="accent-sky-400 w-4 h-4 rounded" />
                 <span>Bật đèn</span>
               </label>
             </div>
 
+            <div id="lightComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
             <div id="lightColorPresets" class="grid grid-cols-5 gap-1.5"></div>
 
             <div class="grid grid-cols-2 gap-x-3 gap-y-2">
@@ -498,6 +550,12 @@
         </div>
       </div>
 
+      <!-- 1-Tap Shareable URL Recipe Link (for TikTok Bio / Comments) -->
+      <button id="btnCopyRecipeLink" type="button" class="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-pink-500/20 to-sky-500/20 hover:from-pink-500/30 hover:to-sky-500/30 border border-pink-400/40 text-white font-bold text-xs flex items-center justify-center gap-2">
+        <i data-lucide="link-2" class="w-4 h-4 text-pink-300"></i>
+        <span>Copy Link Chia Sẻ Màu 1 Chạm (gắn TikTok)</span>
+      </button>
+
       <!-- Export .CUBE 3D LUT -->
       <button id="btnExportCubeLut" type="button" class="w-full py-2 px-3 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/40 text-emerald-300 font-semibold text-xs flex items-center justify-center gap-2">
         <i data-lucide="box" class="w-4 h-4"></i>
@@ -545,6 +603,54 @@
         <button id="btnBatchExport" type="button" class="hidden w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i><span id="batchExportLabel">Xuất hàng loạt</span></button>
         <button id="btnDownloadFile" type="button" class="w-full py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 font-medium text-[11px] flex items-center justify-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5"></i><span>Tải dưới dạng tệp (Files / PC)</span></button>
       </div>
+      <div class="pt-2.5 border-t border-white/10 flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-[11px] font-semibold text-white">Miễn phí 100% by Văn Trường</div>
+          <div class="text-[10px] text-zinc-400 truncate">Ủng hộ tác giả 1 Follow lấy thêm màu nhé!</div>
+        </div>
+        <a href="https://www.tiktok.com/@v.truongg09127?_r=1&_t=ZS-9BQPaaRKgHo" target="_blank" rel="noopener noreferrer" class="shrink-0 h-8 px-3 rounded-xl bg-gradient-to-r from-pink-500 via-rose-500 to-cyan-400 text-white font-bold text-[11px] flex items-center gap-1 shadow">
+          <span>♪ Follow TikTok</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Creator Social Profile Modal (TikTok Priority) -->
+  <div id="creatorModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="w-full max-w-xs rounded-2xl bg-[#16161d] border border-white/15 p-5 shadow-2xl space-y-4 text-center relative">
+      <button id="btnCloseCreator" type="button" class="absolute top-3 right-3 w-7 h-7 rounded-lg bg-white/5 flex items-center justify-center text-zinc-400"><i data-lucide="x" class="w-4 h-4"></i></button>
+      <div class="flex flex-col items-center gap-2 pt-1">
+        <div class="w-16 h-16 rounded-full bg-white p-0.5 border-2 border-sky-400 shadow-lg overflow-hidden">
+          <img src="https://i.ibb.co/sJmwb3WL/IMG-1730.jpg" alt="Văn Trường" class="w-full h-full object-cover rounded-full" />
+        </div>
+        <div>
+          <div class="text-base font-extrabold text-white">Văn Trường</div>
+          <div class="text-[11px] text-sky-300 font-medium">Tác giả ToneLab ULTRA</div>
+        </div>
+      </div>
+
+      <a href="https://www.tiktok.com/@v.truongg09127?_r=1&_t=ZS-9BQPaaRKgHo" target="_blank" rel="noopener noreferrer" class="block w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#fe2c55] via-pink-500 to-[#25f4ee] text-zinc-950 font-extrabold text-xs shadow-lg hover:brightness-110 transition">
+        <div class="flex items-center justify-center gap-1.5 text-white drop-shadow">
+          <span class="text-sm">♪</span>
+          <span>Follow TikTok @v.truongg09127</span>
+        </div>
+        <div class="text-[10px] font-medium text-white/95 mt-0.5">Nhận thêm mã màu & mẹo chỉnh ảnh GenZ</div>
+      </a>
+
+      <div class="grid grid-cols-4 gap-2 pt-1">
+        <a href="https://www.facebook.com/share/19x62rwifm/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" class="py-2 rounded-xl bg-blue-500/15 border border-blue-400/30 text-blue-300 text-[10px] font-semibold flex flex-col items-center gap-1 hover:bg-blue-500/25 transition">
+          <i data-lucide="facebook" class="w-4 h-4"></i><span>Facebook</span>
+        </a>
+        <a href="http://zaloapp.com/qr/p/qbcabyzzxhmb" target="_blank" rel="noopener noreferrer" class="py-2 rounded-xl bg-sky-500/15 border border-sky-400/30 text-sky-300 text-[10px] font-semibold flex flex-col items-center gap-1 hover:bg-sky-500/25 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i><span>Zalo</span>
+        </a>
+        <a href="https://t.me/vantruong0911" target="_blank" rel="noopener noreferrer" class="py-2 rounded-xl bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-[10px] font-semibold flex flex-col items-center gap-1 hover:bg-cyan-500/25 transition">
+          <i data-lucide="send" class="w-4 h-4"></i><span>Telegram</span>
+        </a>
+        <a href="mailto:sipilike09@gmail.com" class="py-2 rounded-xl bg-amber-500/15 border border-amber-400/30 text-amber-300 text-[10px] font-semibold flex flex-col items-center gap-1 hover:bg-amber-500/25 transition">
+          <i data-lucide="mail" class="w-4 h-4"></i><span>Email</span>
+        </a>
+      </div>
     </div>
   </div>
 
@@ -563,10 +669,55 @@
     ];
 
     const CATEGORIES = [
-      { id: 'all', label: 'Tất cả' }, { id: 'custom', label: '⭐ Của tôi' },
-      { id: 'street', label: '🔥 Phố Đêm' }, { id: 'douyin', label: '✨ Douyin' },
-      { id: 'travel', label: '✈️ Du Lịch' }, { id: 'daily', label: '☕ Café' },
-      { id: 'festive', label: '🌸 Lễ Tết' }, { id: 'film', label: '🎞️ Film & CCD' }
+      { id: 'all', label: 'Tất cả' },
+      { id: 'recommend', label: '✨ Đề xuất' },
+      { id: 'custom', label: '⭐ Của tôi' },
+      { id: 'studio', label: '📸 Studio GenZ' },
+      { id: 'wedding', label: '💍 Cưới & Nàng Thơ' },
+      { id: 'interior', label: '🛋️ Quán & Nội Thất' },
+      { id: 'food', label: '🍰 Ẩm Thực' },
+      { id: 'fashion', label: '🖤 Lookbook & Xe' },
+      { id: 'street', label: '🔥 Phố Đêm' },
+      { id: 'douyin', label: '✨ Douyin' },
+      { id: 'travel', label: '✈️ Du Lịch' },
+      { id: 'daily', label: '☕ Café' },
+      { id: 'festive', label: '🌸 Lễ Tết' },
+      { id: 'film', label: '🎞️ Film & CCD' }
+    ];
+
+    const BEAUTY_COMBOS = [
+      { id: 'natural', label: '✨ Tự nhiên nhẹ', vals: { skinSmooth: 28, skinWhiten: 16, skinRosy: 12, hdSharpen: 18, exposure: 4, contrast: 4, temp: 0, sat: 4 } },
+      { id: 'douyin_skin', label: '🌸 Douyin trắng sứ', vals: { skinSmooth: 54, skinWhiten: 42, skinRosy: 26, hdSharpen: 24, exposure: 10, contrast: 6, temp: -6, sat: -4 } },
+      { id: 'cv_sharp', label: '📸 Ảnh thẻ / CV nét', vals: { skinSmooth: 24, skinWhiten: 20, skinRosy: 10, hdSharpen: 46, exposure: 12, contrast: 12, temp: 0, sat: 4 } },
+      { id: 'fix_zalo', label: '⚡ Cứu ảnh mờ Zalo', vals: { skinSmooth: 14, skinWhiten: 8, skinRosy: 6, hdSharpen: 74, exposure: 6, contrast: 14, temp: 0, sat: 10 } }
+    ];
+
+    const HSL_COMBOS = [
+      { id: 'studio_skin', label: '🍑 Da trắng hồng', h: [2, 0, -4, 0, 0, 0, 0, 0], s: [8, -14, -10, 0, 0, 0, 0, 10], l: [8, 26, 8, 0, 0, 0, 0, 6] },
+      { id: 'deep_sky', label: '🌊 Trời xanh sâu', h: [0, 0, 0, 0, -6, -10, 0, 0], s: [0, -6, 0, 0, 18, 28, 0, 0], l: [0, 10, 0, 0, -8, -18, 0, 0] },
+      { id: 'film_green', label: '🌿 Lá xanh Film', h: [0, 0, -14, 24, 0, 0, 0, 0], s: [0, -8, -20, -32, -10, 0, 0, 0], l: [0, 12, -4, -18, 0, 0, 0, 0] },
+      { id: 'pop_color', label: '🔥 Tách màu nổi', h: [0, 0, 0, 10, 0, -6, 0, 0], s: [32, -10, 22, -48, -32, -36, -24, 14], l: [4, 18, 8, -12, -6, -10, 0, 4] }
+    ];
+
+    const EFF_COMBOS = [
+      { id: 'muse_glow', label: '🌙 Nàng thơ sương mờ', vals: { glow: 56, leak: 16, fade: 14, grain: 8, vignette: 10 } },
+      { id: 'sun_17h', label: '🌇 Nắng chiều 17h', vals: { glow: 28, leak: 64, fade: 10, grain: 12, vignette: 16 } },
+      { id: 'film_90s', label: '🎞️ Film 90s Lì', vals: { glow: 10, leak: 14, fade: 42, grain: 48, vignette: 26 } },
+      { id: 'ccd_night', label: '📷 CCD Đêm', vals: { glow: 24, leak: 0, fade: 8, grain: 36, vignette: 36 } }
+    ];
+
+    const LIGHT_COMBOS = [
+      { id: 'side_sun', label: '☀️ Nắng xiên chiều', presetId: 'sunset', intensity: 0.72, radius: 0.62, x: 0.16, y: 0.18 },
+      { id: 'mag_flash', label: '📸 Flash tạp chí', presetId: 'flash', intensity: 0.78, radius: 0.72, x: 0.50, y: 0.26 },
+      { id: 'night_neon', label: '💜 Neon phố đêm', presetId: 'neon', intensity: 0.75, radius: 0.58, x: 0.84, y: 0.22 },
+      { id: 'back_halo', label: '✨ Hào quang sau', presetId: 'moon', intensity: 0.68, radius: 0.76, x: 0.50, y: 0.42 }
+    ];
+
+    const TEXT_COMBOS = [
+      { id: 'diary', label: '📅 Nhật ký', fontId: 'ccd', effect: 'glow', color: '#ffffff', glowColor: '#38bdf8', size: 10, rot: 0, x: 50, y: 88, behindSubject: false, sample: '22.11.2026 • HẢI PHÒNG' },
+      { id: 'vogue', label: '📰 Bìa tạp chí', fontId: 'timeless', effect: 'normal', color: '#ffffff', glowColor: '#ffffff', size: 22, rot: 0, x: 50, y: 18, behindSubject: false, sample: 'STUDIO EDITION' },
+      { id: 'sign', label: '✍️ Chữ ký góc', fontId: 'dancing', effect: 'glow', color: '#ffffff', glowColor: '#f472b6', size: 13, rot: -6, x: 75, y: 86, behindSubject: false, sample: 'by Văn Trường' },
+      { id: 'behind', label: '⚡ Ẩn sau lưng', fontId: 'poster', effect: 'outline', color: '#ffffff', glowColor: '#38bdf8', size: 26, rot: 0, x: 50, y: 34, behindSubject: true, sample: 'GENZ VIBES' }
     ];
 
     const TIKTOK_FONTS = [
@@ -621,6 +772,41 @@
 
     const BASE_PRESETS = [
       makePreset({ id: 'original', name: 'Ảnh Gốc', cat: 'all', swatch: ['#3f3f46', '#71717a', '#d4d4d8'] }),
+      // --- STUDIO GENZ (6) ---
+      makePreset({ id:'st_highkey', name:'High-Key Sạch', cat:'studio', exposure:0.14, contrast:0.08, highlights:-0.16, shadows:0.22, blacks:0.02, temp:-0.04, tint:0.02, sat:-0.04, vibrance:0.12, clarity:0.10, glow:0.14, hslSat:[0.06,-0.12,-0.14,-0.16,0,0,0,0.06], hslLum:[0.08,0.22,0.10,0,0,0,0,0.06], hiTint:[0.01,0.01,0.02], swatch:['#cbd5e1','#f1f5f9','#ffffff'] }),
+      makePreset({ id:'st_editorial', name:'Beauty Tạp Chí', cat:'studio', exposure:0.04, contrast:0.20, highlights:-0.18, shadows:0.14, blacks:0.04, temp:-0.03, tint:0.02, sat:-0.08, vibrance:0.14, clarity:0.16, vignette:0.14, hslSat:[0.12,-0.10,-0.18,-0.22,-0.10,-0.08,0,0.08], hslLum:[0.04,0.18,0.06,-0.08,0,-0.06,0,0.04], shTint:[0.01,0.01,0.025], swatch:['#18181b','#71717a','#f4f4f5'] }),
+      makePreset({ id:'st_leica', name:'Leica Xám Lạnh', cat:'studio', exposure:0.02, contrast:0.22, highlights:-0.20, shadows:0.10, blacks:0.05, temp:-0.10, tint:-0.02, sat:-0.24, vibrance:0.10, clarity:0.20, vignette:0.20, hslSat:[0.16,-0.14,-0.28,-0.36,-0.18,-0.12,-0.20,0], hslLum:[0.02,0.16,0,-0.14,0,-0.12,0,0], shTint:[0.0,0.012,0.028], swatch:['#0f172a','#475569','#e2e8f0'] }),
+      makePreset({ id:'st_ilford', name:'Bạc Ilford B&W', cat:'studio', exposure:0.04, contrast:0.32, highlights:-0.14, shadows:0.12, blacks:0.06, sat:-1.0, clarity:0.22, grain:0.24, vignette:0.22, shTint:[0.008,0.008,0.012], hiTint:[0.01,0.01,0.008], swatch:['#09090b','#52525b','#fafafa'] }),
+      makePreset({ id:'st_porcelain', name:'Studio Da Sứ', cat:'studio', exposure:0.16, contrast:0.04, highlights:-0.20, shadows:0.24, blacks:0.03, temp:-0.08, tint:0.05, sat:-0.06, vibrance:0.10, glow:0.22, hslHue:[0.01,0,-0.03,0,0,0,0,0], hslSat:[0.08,-0.18,-0.16,-0.20,0,0.06,0,0.12], hslLum:[0.10,0.28,0.12,0,0,0,0,0.10], hiTint:[0.02,0.01,0.025], swatch:['#e2e8f0','#fbcfe8','#fff1f2'] }),
+      makePreset({ id:'st_mirrorflash', name:'Flash Gương GenZ', cat:'studio', exposure:0.08, contrast:0.24, highlights:-0.12, shadows:0.08, blacks:0.03, temp:-0.06, tint:0.02, sat:-0.10, vibrance:0.14, clarity:0.18, grain:0.12, vignette:0.18, hslSat:[0.14,-0.10,-0.14,-0.20,0.08,0.10,0,0.08], hslLum:[0.04,0.20,0.06,0,0,-0.06,0,0], shTint:[0.01,0.012,0.026], swatch:['#1e1b4b','#6366f1','#f8fafc'] }),
+
+      // --- CƯỚI & NÀNG THƠ (5) ---
+      makePreset({ id:'wd_korea', name:'Trắng Sứ Hàn', cat:'wedding', exposure:0.15, contrast:0.05, highlights:-0.22, shadows:0.26, blacks:0.03, temp:-0.05, tint:0.04, sat:-0.10, vibrance:0.10, glow:0.20, hslHue:[0,0,-0.04,0.06,0,0,0,0], hslSat:[0.04,-0.16,-0.22,-0.26,-0.10,-0.06,0,0.08], hslLum:[0.08,0.24,0.12,-0.06,0,0.06,0,0.08], hiTint:[0.015,0.012,0.02], swatch:['#e2e8f0','#fef3c7','#ffffff'] }),
+      makePreset({ id:'wd_warm', name:'Phóng Sự Ấm', cat:'wedding', exposure:0.06, contrast:0.12, highlights:-0.20, shadows:0.20, blacks:0.05, temp:0.12, tint:0.03, sat:-0.06, vibrance:0.12, glow:0.16, leak:0.10, hslSat:[0.08,-0.08,-0.14,-0.28,-0.18,-0.14,0,0.06], hslLum:[0.04,0.18,0.08,-0.12,0,0,0,0], shTint:[0.02,0.014,0.006], hiTint:[0.025,0.018,0.008], swatch:['#451a03','#d97706','#fef3c7'] }),
+      makePreset({ id:'wd_euro', name:'Cổ Điển Châu Âu', cat:'wedding', exposure:0.0, contrast:0.16, highlights:-0.22, shadows:0.14, blacks:0.07, temp:0.06, tint:0.02, sat:-0.18, vibrance:0.08, clarity:0.08, grain:0.14, vignette:0.16, hslHue:[0,0,-0.05,0.10,0,-0.04,0,0], hslSat:[0.04,-0.12,-0.26,-0.38,-0.22,-0.18,0,0], hslLum:[0,0.14,0,-0.20,0,-0.10,0,0], shTint:[0.012,0.018,0.014], swatch:['#14532d','#a3a3a3','#f5f5f4'] }),
+      makePreset({ id:'wd_honey', name:'Nắng Mật Ong', cat:'wedding', exposure:0.08, contrast:0.08, highlights:-0.16, shadows:0.22, blacks:0.04, temp:0.18, tint:0.02, sat:0.02, vibrance:0.14, glow:0.24, leak:0.26, hslHue:[0,0,-0.04,0.06,0,0,0,0], hslSat:[0.06,-0.06,0.08,-0.24,-0.14,-0.12,0,0.06], hslLum:[0.04,0.18,0.10,-0.08,0,0,0,0], hiTint:[0.035,0.022,0.006], swatch:['#78350f','#f59e0b','#fef9c3'] }),
+      makePreset({ id:'wd_garden', name:'Vườn Hoa Sớm', cat:'wedding', exposure:0.12, contrast:0.06, highlights:-0.18, shadows:0.22, blacks:0.02, temp:-0.02, tint:0.05, sat:0.04, vibrance:0.16, glow:0.18, hslHue:[0,0,-0.03,0.04,0,-0.04,0,0], hslSat:[0.10,-0.10,-0.08,0.06,0.10,0.08,0.08,0.16], hslLum:[0.06,0.20,0.08,0.06,0.04,0.04,0,0.08], swatch:['#166534','#86efac','#fce7f3'] }),
+
+      // --- QUÁN & NỘI THẤT (5) ---
+      makePreset({ id:'in_minimal', name:'Minimalist Hàn', cat:'interior', exposure:0.14, contrast:0.08, highlights:-0.18, shadows:0.22, blacks:0.03, temp:-0.08, tint:0.01, sat:-0.18, vibrance:0.08, clarity:0.10, hslSat:[-0.08,-0.16,-0.26,-0.22,-0.10,-0.06,0,0], hslLum:[0.04,0.16,0.14,0,0,0.04,0,0], hiTint:[0.008,0.01,0.016], swatch:['#d4d4d8','#f4f4f5','#ffffff'] }),
+      makePreset({ id:'in_wood', name:'Gỗ Trầm Sang', cat:'interior', exposure:-0.04, contrast:0.18, highlights:-0.20, shadows:0.14, blacks:0.07, temp:0.12, tint:0.02, sat:-0.14, vibrance:0.08, clarity:0.14, vignette:0.20, hslHue:[0,0,-0.04,0.08,0,0,0,0], hslSat:[0.04,0.08,-0.16,-0.36,-0.26,-0.22,0,0], hslLum:[-0.04,-0.04,-0.08,-0.18,0,-0.10,0,0], shTint:[0.022,0.014,0.008], swatch:['#292524','#78350f','#d6d3d1'] }),
+      makePreset({ id:'in_wabi', name:'Wabi-Sabi Kem', cat:'interior', exposure:0.08, contrast:0.04, highlights:-0.20, shadows:0.20, blacks:0.06, temp:0.08, tint:0.02, sat:-0.22, vibrance:0.06, grain:0.12, hslSat:[-0.10,-0.14,-0.20,-0.34,-0.26,-0.22,0,0], hslLum:[0.02,0.14,0.12,-0.10,0,0,0,0], hiTint:[0.024,0.02,0.012], swatch:['#78716c','#d6d3d1','#fafaf9'] }),
+      makePreset({ id:'in_glass', name:'Kính Lạnh Đô Thị', cat:'interior', exposure:0.04, contrast:0.18, highlights:-0.16, shadows:0.16, blacks:0.04, temp:-0.14, tint:-0.02, sat:-0.12, vibrance:0.14, clarity:0.18, hslHue:[0,0,0,0,-0.04,-0.04,0,0], hslSat:[0,-0.12,-0.22,-0.26,0.14,0.18,0,0], hslLum:[0,0.14,0,-0.08,0,-0.08,0,0], shTint:[0.0,0.016,0.032], swatch:['#0f172a','#0284c7','#e0f2fe'] }),
+      makePreset({ id:'in_concrete', name:'Studio Bê Tông', cat:'interior', exposure:0.02, contrast:0.20, highlights:-0.18, shadows:0.14, blacks:0.06, temp:-0.06, tint:0.0, sat:-0.28, vibrance:0.08, clarity:0.20, grain:0.10, hslSat:[0.08,-0.12,-0.28,-0.34,-0.20,-0.16,0,0], hslLum:[0,0.16,0,-0.12,0,-0.08,0,0], swatch:['#27272a','#71717a','#d4d4d8'] }),
+
+      // --- ẨM THỰC (5) ---
+      makePreset({ id:'fd_michelin', name:'Michelin Sắc Nét', cat:'food', exposure:0.04, contrast:0.20, highlights:-0.18, shadows:0.16, blacks:0.03, temp:0.08, tint:0.02, sat:0.10, vibrance:0.18, clarity:0.24, vignette:0.18, hslSat:[0.18,0.14,0.10,0.12,-0.12,-0.18,0,0], hslLum:[0.04,0.08,0.06,0.04,0,-0.10,0,0], swatch:['#450a0a','#ea580c','#fef3c7'] }),
+      makePreset({ id:'fd_pastel', name:'Bánh Ngọt Pastel', cat:'food', exposure:0.14, contrast:0.04, highlights:-0.16, shadows:0.24, blacks:0.02, temp:0.02, tint:0.05, sat:0.02, vibrance:0.14, glow:0.16, hslSat:[0.08,-0.04,0.04,-0.10,0.06,0.04,0.08,0.16], hslLum:[0.08,0.16,0.14,0.06,0.06,0.06,0.06,0.10], hiTint:[0.02,0.012,0.018], swatch:['#fbcfe8','#fde68a','#fffbeb'] }),
+      makePreset({ id:'fd_coffee', name:'Cà Phê Rang Xay', cat:'food', exposure:-0.06, contrast:0.20, highlights:-0.20, shadows:0.14, blacks:0.06, temp:0.14, tint:0.02, sat:-0.08, vibrance:0.10, clarity:0.18, vignette:0.24, hslSat:[0.06,0.14,-0.12,-0.34,-0.28,-0.26,0,0], hslLum:[-0.04,-0.04,-0.08,-0.16,0,-0.14,0,0], shTint:[0.024,0.014,0.006], swatch:['#1c1917','#78350f','#fed7aa'] }),
+      makePreset({ id:'fd_fresh', name:'Tươi Mọng Nhật', cat:'food', exposure:0.10, contrast:0.10, highlights:-0.16, shadows:0.20, blacks:0.01, temp:-0.04, tint:0.02, sat:0.10, vibrance:0.20, clarity:0.16, hslSat:[0.16,0.08,0.10,0.18,0.10,0.06,0,0.10], hslLum:[0.04,0.10,0.08,0.08,0.06,0,0,0.06], swatch:['#15803d','#fb7185','#fef2f2'] }),
+      makePreset({ id:'fd_tea', name:'Trà Chiều Ấm', cat:'food', exposure:0.08, contrast:0.08, highlights:-0.18, shadows:0.20, blacks:0.04, temp:0.12, tint:0.03, sat:-0.04, vibrance:0.12, glow:0.14, leak:0.12, hslSat:[0.06,0.04,-0.06,-0.22,-0.14,-0.16,0,0.06], hslLum:[0.04,0.12,0.10,-0.06,0,0,0,0], hiTint:[0.025,0.018,0.008], swatch:['#92400e','#fbbf24','#fffbeb'] }),
+
+      // --- LOOKBOOK & XE / CẢNH ĐÊM (5) ---
+      makePreset({ id:'fs_streetwear', name:'Streetwear Lì', cat:'fashion', exposure:-0.02, contrast:0.24, highlights:-0.20, shadows:0.16, blacks:0.08, temp:-0.06, tint:0.0, sat:-0.18, vibrance:0.10, clarity:0.22, grain:0.14, vignette:0.18, hslSat:[0.16,-0.10,-0.20,-0.34,-0.14,-0.10,0,0], hslLum:[0,0.16,0,-0.16,0,-0.12,0,0], shTint:[0.008,0.014,0.022], swatch:['#18181b','#52525b','#f43f5e'] }),
+      makePreset({ id:'fs_cleannight', name:'Đêm Phố Sạch', cat:'fashion', exposure:0.04, contrast:0.22, highlights:-0.22, shadows:0.18, blacks:0.03, temp:-0.12, tint:0.02, sat:-0.04, vibrance:0.18, clarity:0.18, vignette:0.20, hslHue:[0,0,-0.04,0,-0.06,-0.04,0,0], hslSat:[0.16,-0.08,-0.16,-0.28,0.20,0.22,0.12,0.12], hslLum:[0.02,0.14,0,-0.14,0.04,-0.06,0,0], shTint:[0.0,0.014,0.03], swatch:['#020617','#1d4ed8','#38bdf8'] }),
+      makePreset({ id:'fs_metal', name:'Kim Loại Lạnh', cat:'fashion', exposure:0.0, contrast:0.28, highlights:-0.16, shadows:0.14, blacks:0.05, temp:-0.16, tint:-0.02, sat:-0.26, vibrance:0.12, clarity:0.28, vignette:0.22, hslSat:[0.20,-0.16,-0.28,-0.38,0.12,0.16,0,0], hslLum:[0,0.10,0,-0.16,0,-0.10,0,0], shTint:[0.0,0.016,0.032], swatch:['#09090b','#334155','#94a3b8'] }),
+      makePreset({ id:'fs_oldgold', name:'Phố Cổ Đèn Vàng', cat:'fashion', exposure:0.0, contrast:0.18, highlights:-0.22, shadows:0.18, blacks:0.06, temp:0.18, tint:0.02, sat:0.0, vibrance:0.14, clarity:0.14, glow:0.16, vignette:0.22, hslHue:[0,0,-0.06,0.08,0,0,0,0], hslSat:[0.10,0.12,0.10,-0.32,-0.22,-0.20,0,0], hslLum:[0,0.10,0.06,-0.14,0,-0.14,0,0], shTint:[0.016,0.012,0.006], hiTint:[0.03,0.02,0.004], swatch:['#1c1917','#d97706','#fde68a'] }),
+      makePreset({ id:'fs_neonclean', name:'Bóng Đêm Neon', cat:'fashion', exposure:0.02, contrast:0.24, highlights:-0.20, shadows:0.16, blacks:0.04, temp:-0.14, tint:0.08, sat:0.06, vibrance:0.22, clarity:0.16, glow:0.18, vignette:0.22, hslHue:[0,0,0,0,-0.06,-0.04,0.04,0.02], hslSat:[0.18,-0.12,-0.18,-0.32,0.28,0.26,0.24,0.24], hslLum:[0.04,0.14,0,-0.16,0.06,-0.06,0.04,0.06], shTint:[0.016,0.006,0.036], swatch:['#09090b','#ec4899','#22d3ee'] }),
       // 1. PHỐ ĐÊM (10)
       makePreset({ id: 'st_redpop', name: 'Xám Lạnh Nổi Đỏ', cat: 'street', exposure: -0.05, contrast: 0.25, highlights: -0.18, shadows: -0.10, blacks: 0.03, temp: -0.10, clarity: 0.32, vignette: 0.28, hslSat: [0.36,-0.25,-0.95,-0.98,-0.95,-0.92,-0.95,-0.85], hslLum: [0.06,0.22,-0.10,-0.20,-0.15,-0.15,-0.10,0], shTint: [-0.03,0.01,0.06], swatch: ['#111318','#525866','#ef4444'] }),
       makePreset({ id: 'st_crimson', name: 'Đỏ Son Phố Đêm', cat: 'street', exposure: -0.08, contrast: 0.28, highlights: -0.22, shadows: 0.08, blacks: 0.05, temp: -0.14, clarity: 0.36, vignette: 0.32, hslHue: [0.02,-0.02,0,0,0,0,0,0], hslSat: [0.30,-0.35,-0.92,-0.95,-0.88,-0.80,-0.90,-0.85], hslLum: [0.04,0.25,-0.08,-0.18,-0.10,-0.12,-0.10,0], shTint: [-0.04,0,0.07], swatch: ['#0f172a','#475569','#dc2626'] }),
@@ -756,7 +942,12 @@
       exifText: 'iPhone • 26mm • f/1.6 • ISO 64',
       dateStampOn: false,
       dateStampText: '26 11 22',
-      thumbCache: {}
+      thumbCache: {},
+      recommendedIds: [],
+      pinnedA: null, // { canvas, name }
+      zoom: { scale: 1, tx: 0, ty: 0 },
+      history: [],
+      historyIdx: -1
     };
 
     try {
@@ -1571,10 +1762,21 @@
         engine.uploadSource(compSrc);
         engine.render(params, state.intensity, state.cubeLut.active ? state.cubeLut.strength : 0);
       }
+      const leftCompareSrc = (state.splitMode && state.pinnedA && state.pinnedA.canvas) ? state.pinnedA.canvas : working;
       drawFinalFrameAndOverlay(
-        displayCanvas, engine.ready ? glOffCanvas : compSrc, working, w, h,
+        displayCanvas, engine.ready ? glOffCanvas : compSrc, leftCompareSrc, w, h,
         { showOrig: state.holdingOriginal, split: state.splitMode ? state.splitPos : -1 }
       );
+      const slLbl = document.getElementById('splitLeftLabel'), srLbl = document.getElementById('splitRightLabel');
+      if (slLbl && srLbl) {
+        if (state.pinnedA) {
+          slLbl.textContent = 'A: ' + state.pinnedA.name;
+          srLbl.textContent = 'B: ' + preset.name;
+        } else {
+          slLbl.textContent = 'TRƯỚC';
+          srLbl.textContent = 'SAU';
+        }
+      }
       fitCanvasToStage();
       drawInteractHelpers();
     }
@@ -1595,8 +1797,20 @@
     function drawInteractHelpers() {
       const ctx = interactOverlay.getContext('2d');
       ctx.clearRect(0, 0, interactOverlay.width, interactOverlay.height);
-      const show = state.eraser.active || state.liquify.active;
+      const showLight = state.activeTab === 'effects' && state.effSubTab === 'light' && state.light3d.on;
+      const show = state.eraser.active || state.liquify.active || showLight;
       interactOverlay.classList.toggle('hidden', !show);
+      if (showLight) {
+        const lx = state.light3d.x * interactOverlay.width;
+        const ly = state.light3d.y * interactOverlay.height;
+        const r = Math.max(14, interactOverlay.width * 0.032);
+        ctx.save();
+        ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = Math.max(2, interactOverlay.width * 0.004);
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.25)';
+        ctx.beginPath(); ctx.arc(lx, ly, r, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.beginPath(); ctx.arc(lx, ly, Math.max(4, r * 0.25), 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill();
+        ctx.restore();
+      }
       if (state.eraser.active && state.eraser.mode === 'clone' && state.eraser.cloneSrc) {
         const cx = state.eraser.cloneSrc.nx * interactOverlay.width;
         const cy = state.eraser.cloneSrc.ny * interactOverlay.height;
@@ -1788,7 +2002,7 @@
       ctx.fillStyle = '#ffffff'; ctx.font = "800 42px 'Inter', sans-serif";
       ctx.fillText(preset.name.slice(0, 22), 56, 938);
       ctx.fillStyle = '#a1a1aa'; ctx.font = "500 22px 'Inter', sans-serif";
-      ctx.fillText('by Văn Trường • Quét mã QR trên web để áp màu', 56, 982);
+      ctx.fillText('TikTok @v.truongg09127 • Quét mã QR trên web để áp màu', 56, 982);
 
       // Color Swatch dots
       const sw = preset.swatch || ['#1e293b', '#38bdf8', '#f8fafc'];
@@ -1921,9 +2135,47 @@
       return c;
     }
 
+    function analyzePhotoAndRecommend(img) {
+      try {
+        const c = document.createElement('canvas'); c.width = 48; c.height = 48;
+        const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0, 48, 48);
+        const d = ctx.getImageData(0, 0, 48, 48).data, n = 48 * 48;
+        let sumL = 0, sumWarm = 0, sumSat = 0, darkCnt = 0, skinCnt = 0, blueCnt = 0;
+        for (let i = 0; i < d.length; i += 4) {
+          const r = d[i] / 255, g = d[i+1] / 255, b = d[i+2] / 255;
+          const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+          const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+          sumL += lum; sumWarm += (r - b); sumSat += (mx - mn);
+          if (lum < 0.28) darkCnt++;
+          if (r > 0.25 && r > g && g > b && (r - b) > 0.08 && lum > 0.22) skinCnt++;
+          if (b > r + 0.08 && b > 0.35) blueCnt++;
+        }
+        const avgL = sumL / n, avgWarm = sumWarm / n, darkPct = darkCnt / n, skinPct = skinCnt / n, bluePct = blueCnt / n;
+        let picks = [];
+        if (darkPct > 0.48 || avgL < 0.35) {
+          picks = ['fs_cleannight', 'fs_neonclean', 'st_mirrorflash', 'fs_oldgold', 'st_leica'];
+        } else if (skinPct > 0.18 && avgL > 0.45) {
+          picks = ['st_highkey', 'st_porcelain', 'wd_korea', 'st_editorial', 'wd_honey'];
+        } else if (bluePct > 0.22) {
+          picks = ['in_glass', 'st_leica', 'wd_garden', 'st_highkey', 'fs_metal'];
+        } else if (avgWarm > 0.12) {
+          picks = ['fd_coffee', 'in_wood', 'wd_warm', 'fd_michelin', 'in_wabi'];
+        } else {
+          picks = ['st_highkey', 'in_minimal', 'st_editorial', 'wd_korea', 'fs_streetwear'];
+        }
+        const validIds = new Set(getAllPresets().map(p => p.id));
+        state.recommendedIds = picks.filter(id => validIds.has(id));
+      } catch (e) {
+        state.recommendedIds = ['st_highkey', 'st_editorial', 'wd_korea', 'in_minimal', 'fs_cleannight'];
+      }
+    }
+
     function loadImageElement(img, toastMsg) {
       state.sourceImage = img; state.healedCanvas = null; state.eraserHistory = [];
       state.thumbCache = {}; state.cutout.maskCanvas = null; state.liquify.strokes = [];
+      state.pinnedA = null;
+      resetZoom();
+      analyzePhotoAndRecommend(img);
       document.getElementById('aiEngineBadge').textContent = 'Sẵn sàng';
       document.getElementById('aiStatusText').textContent = 'Tách người/vật thể để xóa phông & lồng chữ sau lưng';
       if (thumbEngine.ready) thumbEngine.uploadSource(createSquareThumbSource(img));
@@ -1931,6 +2183,7 @@
       document.getElementById('resLabel').textContent = `• ${ow}×${oh}`;
       document.getElementById('exportResInfo').textContent = `${ow} × ${oh} px`;
       renderMain(); renderPresetList();
+      if (state.history.length === 0) pushHistorySnapshot();
       if (toastMsg) showToast(toastMsg);
     }
 
@@ -1973,6 +2226,9 @@
       const all = getAllPresets();
       const items = all.filter(p => {
         if (state.favOnly && !state.favorites.includes(p.id)) return false;
+        if (!state.favOnly && state.activeCategory === 'recommend') {
+          return p.id === 'original' || state.recommendedIds.includes(p.id);
+        }
         if (!state.favOnly && state.activeCategory !== 'all' && p.cat !== state.activeCategory && p.id !== 'original') return false;
         return true;
       });
@@ -2354,7 +2610,7 @@
         saveStorage(); renderPresetList(); return;
       }
       const card = e.target.closest('.preset-card'); if (!card) return;
-      state.activePresetId = card.dataset.presetId; renderPresetList(); renderMain();
+      state.activePresetId = card.dataset.presetId; renderPresetList(); renderMain(); pushHistorySnapshot(true);
     });
     document.getElementById('sliderIntensity').addEventListener('input', e => {
       const v = parseInt(e.target.value, 10); state.intensity = v / 100;
@@ -2367,7 +2623,8 @@
       const k = s.dataset.adjKey, v = parseInt(s.value, 10); state.manual[k] = v;
       const l = document.getElementById('adjVal_' + k);
       if (l) { l.textContent = v > 0 ? '+' + v : String(v); l.className = 'font-semibold ' + (v!==0?'text-sky-400':'text-zinc-500'); }
-      renderMain();
+      syncQuickToneSliders();
+      renderMain(); pushHistorySnapshot(false);
     }
     document.getElementById('beautySlidersContainer').addEventListener('input', handleManualSlider);
     document.getElementById('effectsSlidersContainer').addEventListener('input', handleManualSlider);
@@ -2480,6 +2737,25 @@
         bctx.fill();
         return;
       }
+      // Direct drag 3D Studio Light focal point on canvas
+      if (state.activeTab === 'effects' && state.effSubTab === 'light' && state.light3d.on) {
+        activeDraw = 'light3d';
+        state.light3d.x = nx; state.light3d.y = ny;
+        document.getElementById('sliderLightX').value = Math.round(nx * 100); document.getElementById('valLightX').textContent = Math.round(nx * 100) + '%';
+        document.getElementById('sliderLightY').value = Math.round(ny * 100); document.getElementById('valLightY').textContent = Math.round(ny * 100) + '%';
+        displayCanvas.setPointerCapture(e.pointerId);
+        renderMain();
+        return;
+      }
+      // Direct drag TikTok Text on canvas when touching near text
+      if (state.activeTab === 'studio' && state.studioSubTab === 'text' && state.text.content.trim()) {
+        const tx = state.text.x / 100, ty = state.text.y / 100;
+        if (Math.hypot(nx - tx, ny - ty) < 0.24) {
+          activeDraw = 'text';
+          displayCanvas.setPointerCapture(e.pointerId);
+          return;
+        }
+      }
       startHoldOrig();
     });
 
@@ -2489,6 +2765,21 @@
       const nx = Math.min(1, Math.max(0, (e.clientX - rect.left) / rect.width));
       const ny = Math.min(1, Math.max(0, (e.clientY - rect.top) / rect.height));
 
+      if (activeDraw === 'light3d') {
+        state.light3d.x = nx; state.light3d.y = ny;
+        document.getElementById('sliderLightX').value = Math.round(nx * 100); document.getElementById('valLightX').textContent = Math.round(nx * 100) + '%';
+        document.getElementById('sliderLightY').value = Math.round(ny * 100); document.getElementById('valLightY').textContent = Math.round(ny * 100) + '%';
+        renderMain();
+        return;
+      }
+      if (activeDraw === 'text') {
+        state.text.x = Math.round(Math.min(95, Math.max(5, nx * 100)));
+        state.text.y = Math.round(Math.min(92, Math.max(8, ny * 100)));
+        document.getElementById('sliderTextX').value = state.text.x; document.getElementById('valTextX').textContent = state.text.x + '%';
+        document.getElementById('sliderTextY').value = state.text.y; document.getElementById('valTextY').textContent = state.text.y + '%';
+        renderMain();
+        return;
+      }
       if (activeDraw === 'liquify' && liqStart) {
         liqStart.tx = nx; liqStart.ty = ny;
         renderMain();
@@ -2602,6 +2893,294 @@
 
     window.addEventListener('resize', fitCanvasToStage);
 
+
+    // =========================================================================
+    // V5: 1-TAP COMBOS, QUICK TONE SYNC, GLOBAL UNDO/REDO, ZOOM, A/B PIN, LINK
+    // =========================================================================
+    function syncQuickToneSliders() {
+      ['exposure', 'contrast', 'temp', 'sat'].forEach(k => {
+        const v = state.manual[k] || 0;
+        const sl = document.querySelector(`.qt-slider[data-qt-key="${k}"]`);
+        const lb = document.getElementById('qtVal_' + k);
+        if (sl) sl.value = v;
+        if (lb) lb.textContent = v > 0 ? '+' + v : String(v);
+      });
+    }
+
+    function renderAllComboBars() {
+      const chipCls = 'shrink-0 px-2.5 py-1 rounded-full bg-white/10 hover:bg-sky-500/20 border border-white/15 hover:border-sky-400/50 text-[10.5px] font-semibold text-zinc-100 transition active:scale-95';
+      const bBar = document.getElementById('beautyComboBar');
+      if (bBar) bBar.innerHTML = BEAUTY_COMBOS.map(c => `<button type="button" data-bcombo="${c.id}" class="${chipCls}">${c.label}</button>`).join('');
+      const hBar = document.getElementById('hslComboBar');
+      if (hBar) hBar.innerHTML = HSL_COMBOS.map(c => `<button type="button" data-hcombo="${c.id}" class="${chipCls}">${c.label}</button>`).join('');
+      const eBar = document.getElementById('effComboBar');
+      if (eBar) eBar.innerHTML = EFF_COMBOS.map(c => `<button type="button" data-ecombo="${c.id}" class="${chipCls}">${c.label}</button>`).join('');
+      const lBar = document.getElementById('lightComboBar');
+      if (lBar) lBar.innerHTML = LIGHT_COMBOS.map(c => `<button type="button" data-lcombo="${c.id}" class="${chipCls}">${c.label}</button>`).join('');
+      const tBar = document.getElementById('textComboBar');
+      if (tBar) tBar.innerHTML = TEXT_COMBOS.map(c => `<button type="button" data-tcombo="${c.id}" class="${chipCls}">${c.label}</button>`).join('');
+    }
+
+    // Global Undo / Redo History
+    function captureEditSnapshot() {
+      return JSON.stringify({
+        activePresetId: state.activePresetId,
+        intensity: state.intensity,
+        autoMagic: state.autoMagic,
+        manual: Object.assign({}, state.manual),
+        customHslH: [...state.customHslH],
+        customHslS: [...state.customHslS],
+        customHslL: [...state.customHslL],
+        light3d: Object.assign({}, state.light3d, { rgb: [...state.light3d.rgb] }),
+        text: Object.assign({}, state.text),
+        transform: Object.assign({}, state.transform),
+        frameStyle: state.frameStyle,
+        dateStampOn: state.dateStampOn,
+        dateStampText: state.dateStampText
+      });
+    }
+
+    function updateUndoRedoButtons() {
+      const u = document.getElementById('btnGlobalUndo'), r = document.getElementById('btnGlobalRedo');
+      if (!u || !r) return;
+      const canU = state.historyIdx > 0, canR = state.historyIdx < state.history.length - 1;
+      u.disabled = !canU; u.classList.toggle('opacity-40', !canU);
+      r.disabled = !canR; r.classList.toggle('opacity-40', !canR);
+    }
+
+    let histDebounce = null;
+    function pushHistorySnapshot(immediate = false) {
+      const commit = () => {
+        const snap = captureEditSnapshot();
+        if (state.history[state.historyIdx] === snap) return;
+        state.history = state.history.slice(0, state.historyIdx + 1);
+        state.history.push(snap);
+        if (state.history.length > 25) state.history.shift();
+        state.historyIdx = state.history.length - 1;
+        updateUndoRedoButtons();
+      };
+      clearTimeout(histDebounce);
+      if (immediate) commit();
+      else histDebounce = setTimeout(commit, 320);
+    }
+
+    function restoreHistoryAt(idx) {
+      if (idx < 0 || idx >= state.history.length) return;
+      state.historyIdx = idx;
+      const s = JSON.parse(state.history[idx]);
+      state.activePresetId = s.activePresetId;
+      state.intensity = s.intensity;
+      state.autoMagic = s.autoMagic;
+      Object.assign(state.manual, s.manual);
+      state.customHslH = [...s.customHslH];
+      state.customHslS = [...s.customHslS];
+      state.customHslL = [...s.customHslL];
+      state.light3d = Object.assign({}, s.light3d);
+      state.text = Object.assign({}, s.text);
+      state.transform = Object.assign({}, s.transform);
+      state.frameStyle = s.frameStyle;
+      state.dateStampOn = s.dateStampOn;
+      state.dateStampText = s.dateStampText;
+
+      document.getElementById('sliderIntensity').value = Math.round(state.intensity * 100);
+      document.getElementById('valIntensity').textContent = Math.round(state.intensity * 100) + '%';
+      document.getElementById('toggleLight3D').checked = state.light3d.on;
+      document.getElementById('sliderLightInt').value = Math.round(state.light3d.intensity * 100);
+      document.getElementById('valLightInt').textContent = Math.round(state.light3d.intensity * 100) + '%';
+      document.getElementById('sliderLightRad').value = Math.round(state.light3d.radius * 100);
+      document.getElementById('valLightRad').textContent = Math.round(state.light3d.radius * 100) + '%';
+      document.getElementById('sliderLightX').value = Math.round(state.light3d.x * 100);
+      document.getElementById('valLightX').textContent = Math.round(state.light3d.x * 100) + '%';
+      document.getElementById('sliderLightY').value = Math.round(state.light3d.y * 100);
+      document.getElementById('valLightY').textContent = Math.round(state.light3d.y * 100) + '%';
+      document.getElementById('inputOverlayText').value = state.text.content;
+      document.getElementById('sliderTextSize').value = state.text.size;
+      document.getElementById('valTextSize').textContent = state.text.size + '%';
+      document.getElementById('sliderTextRot').value = state.text.rot;
+      document.getElementById('valTextRot').textContent = state.text.rot + '°';
+      document.getElementById('sliderTextX').value = state.text.x;
+      document.getElementById('valTextX').textContent = state.text.x + '%';
+      document.getElementById('sliderTextY').value = state.text.y;
+      document.getElementById('valTextY').textContent = state.text.y + '%';
+      document.getElementById('toggleDateStamp').checked = state.dateStampOn;
+      document.getElementById('inputDateStamp').value = state.dateStampText;
+
+      syncQuickToneSliders();
+      renderSliders('beautySlidersContainer', BEAUTY_DEFS);
+      renderSliders('effectsSlidersContainer', EFFECT_DEFS);
+      renderHslUI(); renderTextStudioUI(); renderLight3DUI(); renderCropAndFrameUI(); renderPresetList();
+      updateUndoRedoButtons();
+      renderMain();
+    }
+
+    // Pinch-to-Zoom Helpers
+    function applyZoomTransform() {
+      const container = document.getElementById('canvasContainer');
+      const btn = document.getElementById('btnResetZoom');
+      if (!container) return;
+      container.style.transform = `translate(${state.zoom.tx}px, ${state.zoom.ty}px) scale(${state.zoom.scale})`;
+      container.style.transformOrigin = 'center center';
+      if (btn) {
+        const zoomed = state.zoom.scale > 1.05;
+        btn.classList.toggle('hidden', !zoomed);
+        btn.textContent = state.zoom.scale.toFixed(1) + 'x';
+      }
+    }
+    function resetZoom() {
+      state.zoom = { scale: 1, tx: 0, ty: 0 };
+      applyZoomTransform();
+    }
+
+    // V5 Event Bindings
+    const creatorModal = document.getElementById('creatorModal');
+    document.getElementById('btnOpenCreator').addEventListener('click', () => creatorModal.classList.remove('hidden'));
+    document.getElementById('btnCloseCreator').addEventListener('click', () => creatorModal.classList.add('hidden'));
+    creatorModal.addEventListener('click', e => { if (e.target === creatorModal) creatorModal.classList.add('hidden'); });
+
+    document.getElementById('btnGlobalUndo').addEventListener('click', () => {
+      if (state.historyIdx > 0) { restoreHistoryAt(state.historyIdx - 1); showToast('Đã hoàn tác'); }
+    });
+    document.getElementById('btnGlobalRedo').addEventListener('click', () => {
+      if (state.historyIdx < state.history.length - 1) { restoreHistoryAt(state.historyIdx + 1); showToast('Đã làm lại'); }
+    });
+    document.getElementById('btnResetZoom').addEventListener('click', resetZoom);
+
+    // Quick Tone Fine-Tune Toggle & Sliders
+    document.getElementById('btnToggleToneTune').addEventListener('click', () => {
+      const bar = document.getElementById('toneQuickTuneBar');
+      const open = bar.classList.toggle('hidden') === false;
+      document.getElementById('btnToggleToneTune').classList.toggle('border-sky-400', open);
+      document.getElementById('btnToggleToneTune').classList.toggle('bg-sky-500/20', open);
+      syncQuickToneSliders();
+    });
+    document.getElementById('toneQuickTuneBar').addEventListener('input', e => {
+      const s = e.target.closest('.qt-slider'); if (!s) return;
+      const k = s.dataset.qtKey, v = parseInt(s.value, 10);
+      state.manual[k] = v;
+      const lb = document.getElementById('qtVal_' + k);
+      if (lb) lb.textContent = v > 0 ? '+' + v : String(v);
+      renderSliders('beautySlidersContainer', BEAUTY_DEFS);
+      renderMain(); pushHistorySnapshot(false);
+    });
+
+    // Pin A/B Split Compare
+    document.getElementById('btnPinA').addEventListener('click', () => {
+      const btn = document.getElementById('btnPinA');
+      if (state.pinnedA) {
+        state.pinnedA = null;
+        btn.classList.remove('border-amber-400', 'text-amber-300', 'bg-amber-500/20');
+        showToast('Đã bỏ ghim A — so sánh Trước/Sau');
+        renderMain();
+        return;
+      }
+      if (!displayCanvas.width) return;
+      const snap = document.createElement('canvas');
+      snap.width = glOffCanvas.width || displayCanvas.width;
+      snap.height = glOffCanvas.height || displayCanvas.height;
+      snap.getContext('2d').drawImage(engine.ready ? glOffCanvas : displayCanvas, 0, 0, snap.width, snap.height);
+      state.pinnedA = { canvas: snap, name: getActivePreset().name };
+      state.splitMode = true;
+      splitOverlay.classList.remove('hidden');
+      btnSplitToggle.classList.add('border-sky-400', 'text-sky-300');
+      btn.classList.add('border-amber-400', 'text-amber-300', 'bg-amber-500/20');
+      renderMain();
+      showToast(`Đã ghim A (${state.pinnedA.name})! Giờ chọn màu B để so sánh`);
+    });
+
+    // Copy 1-Tap Shareable URL Recipe Link
+    document.getElementById('btnCopyRecipeLink').addEventListener('click', () => {
+      const code = buildCompactRecipeString();
+      const base = (window.location.origin && window.location.origin !== 'null')
+        ? (window.location.origin + window.location.pathname)
+        : 'https://tonelab-studio-vantruong.sipilike09.workers.dev/';
+      const fullUrl = base + '?recipe=' + encodeURIComponent(code);
+      const ta = document.getElementById('inputRecipeCode');
+      ta.value = fullUrl; ta.select();
+      try { navigator.clipboard.writeText(fullUrl); } catch (e) { document.execCommand('copy'); }
+      showToast('Đã copy Link chia sẻ màu 1 chạm!');
+    });
+
+    // 1-Tap Combos Click Handlers
+    document.getElementById('beautyComboBar').addEventListener('click', e => {
+      const b = e.target.closest('[data-bcombo]'); if (!b) return;
+      const c = BEAUTY_COMBOS.find(x => x.id === b.dataset.bcombo); if (!c) return;
+      Object.assign(state.manual, c.vals);
+      syncQuickToneSliders();
+      renderSliders('beautySlidersContainer', BEAUTY_DEFS);
+      renderMain(); pushHistorySnapshot(true);
+      showToast(`Đã áp combo: ${c.label}`);
+    });
+    document.getElementById('hslComboBar').addEventListener('click', e => {
+      const b = e.target.closest('[data-hcombo]'); if (!b) return;
+      const c = HSL_COMBOS.find(x => x.id === b.dataset.hcombo); if (!c) return;
+      state.customHslH = [...c.h]; state.customHslS = [...c.s]; state.customHslL = [...c.l];
+      renderHslUI(); renderMain(); pushHistorySnapshot(true);
+      showToast(`Đã áp HSL: ${c.label}`);
+    });
+    document.getElementById('effComboBar').addEventListener('click', e => {
+      const b = e.target.closest('[data-ecombo]'); if (!b) return;
+      const c = EFF_COMBOS.find(x => x.id === b.dataset.ecombo); if (!c) return;
+      Object.assign(state.manual, c.vals);
+      renderSliders('effectsSlidersContainer', EFFECT_DEFS);
+      renderMain(); pushHistorySnapshot(true);
+      showToast(`Đã áp hiệu ứng: ${c.label}`);
+    });
+    document.getElementById('lightComboBar').addEventListener('click', e => {
+      const b = e.target.closest('[data-lcombo]'); if (!b) return;
+      const c = LIGHT_COMBOS.find(x => x.id === b.dataset.lcombo); if (!c) return;
+      const lp = LIGHT_3D_PRESETS.find(x => x.id === c.presetId) || LIGHT_3D_PRESETS[0];
+      state.light3d = { on: true, presetId: lp.id, rgb: [...lp.rgb], intensity: c.intensity, radius: c.radius, x: c.x, y: c.y };
+      document.getElementById('toggleLight3D').checked = true;
+      document.getElementById('sliderLightInt').value = Math.round(c.intensity * 100); document.getElementById('valLightInt').textContent = Math.round(c.intensity * 100) + '%';
+      document.getElementById('sliderLightRad').value = Math.round(c.radius * 100); document.getElementById('valLightRad').textContent = Math.round(c.radius * 100) + '%';
+      document.getElementById('sliderLightX').value = Math.round(c.x * 100); document.getElementById('valLightX').textContent = Math.round(c.x * 100) + '%';
+      document.getElementById('sliderLightY').value = Math.round(c.y * 100); document.getElementById('valLightY').textContent = Math.round(c.y * 100) + '%';
+      renderLight3DUI(); renderMain(); pushHistorySnapshot(true);
+      showToast(`Đã bật đèn: ${c.label}`);
+    });
+    document.getElementById('textComboBar').addEventListener('click', e => {
+      const b = e.target.closest('[data-tcombo]'); if (!b) return;
+      const c = TEXT_COMBOS.find(x => x.id === b.dataset.tcombo); if (!c) return;
+      state.text.fontId = c.fontId; state.text.effect = c.effect; state.text.color = c.color;
+      state.text.glowColor = c.glowColor; state.text.size = c.size; state.text.rot = c.rot;
+      state.text.x = c.x; state.text.y = c.y; state.text.behindSubject = c.behindSubject;
+      if (!state.text.content.trim()) state.text.content = c.sample;
+      document.getElementById('inputOverlayText').value = state.text.content;
+      document.getElementById('inputTextColor').value = state.text.color;
+      document.getElementById('inputGlowColor').value = state.text.glowColor;
+      document.getElementById('sliderTextSize').value = c.size; document.getElementById('valTextSize').textContent = c.size + '%';
+      document.getElementById('sliderTextRot').value = c.rot; document.getElementById('valTextRot').textContent = c.rot + '°';
+      document.getElementById('sliderTextX').value = c.x; document.getElementById('valTextX').textContent = c.x + '%';
+      document.getElementById('sliderTextY').value = c.y; document.getElementById('valTextY').textContent = c.y + '%';
+      renderTextStudioUI(); renderMain(); pushHistorySnapshot(true);
+      if (c.behindSubject && !state.cutout.maskCanvas) showToast('Vào "Tách AI" bấm Tách ngay để chữ ra sau lưng!');
+      else showToast(`Đã áp mẫu chữ: ${c.label}`);
+    });
+
+    // Pinch-to-Zoom (2 fingers on stageSection)
+    let pinchStartDist = 0, pinchStartScale = 1;
+    const stageEl = document.getElementById('stageSection');
+    stageEl.addEventListener('touchstart', e => {
+      if (e.touches.length === 2) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        pinchStartDist = Math.hypot(dx, dy);
+        pinchStartScale = state.zoom.scale;
+      }
+    }, { passive: true });
+    stageEl.addEventListener('touchmove', e => {
+      if (e.touches.length === 2 && pinchStartDist > 0) {
+        const dx = e.touches[0].clientX - e.touches[1].clientX;
+        const dy = e.touches[0].clientY - e.touches[1].clientY;
+        const dist = Math.hypot(dx, dy);
+        state.zoom.scale = Math.min(3.5, Math.max(1, pinchStartScale * (dist / pinchStartDist)));
+        applyZoomTransform();
+      }
+    }, { passive: true });
+    stageEl.addEventListener('touchend', e => {
+      if (e.touches.length < 2) pinchStartDist = 0;
+    }, { passive: true });
+
     // =========================================================================
     // 13. INIT
     // =========================================================================
@@ -2613,7 +3192,16 @@
     renderTextStudioUI();
     renderLight3DUI();
     renderCropAndFrameUI();
+    renderAllComboBars();
     loadDemoImage(0);
+    // Auto-apply ?recipe=TONELAB:... from TikTok Bio / Share Link
+    try {
+      const urlRecipe = new URLSearchParams(window.location.search).get('recipe');
+      if (urlRecipe && applyRecipeString(urlRecipe)) {
+        syncQuickToneSliders();
+        setTimeout(() => showToast('Đã nạp sẵn công thức màu từ link chia sẻ! ✨'), 450);
+      }
+    } catch (e) {}
   </script>
 </body>
 </html>
