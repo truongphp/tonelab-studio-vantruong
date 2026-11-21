@@ -250,10 +250,16 @@
         </div>
       </div>
 
-      <button id="btnConfirmExport" type="button" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 transition">
-        <i data-lucide="download" class="w-4 h-4"></i>
-        <span>Tải ảnh xuống máy</span>
-      </button>
+      <div class="space-y-2">
+        <button id="btnConfirmExport" type="button" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2 transition">
+          <i data-lucide="share" class="w-4 h-4"></i>
+          <span>Lưu vào Album Ảnh (Chia sẻ)</span>
+        </button>
+        <button id="btnDownloadFile" type="button" class="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 font-medium text-[11px] flex items-center justify-center gap-1.5 transition">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i>
+          <span>Tải dưới dạng tệp (Files / PC)</span>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -1375,7 +1381,20 @@
     // =========================================================================
     // 6. FULL-RES OFFSCREEN EXPORT
     // =========================================================================
-    function exportFullResImage() {
+    function triggerBlobDownload(blob, fileName, outW, outH, ext) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      document.getElementById('exportModal').classList.add('hidden');
+      showToast(`Đã tải tệp ${outW}×${outH} (${ext.toUpperCase()})`);
+    }
+
+    async function exportFullResImage(mode = 'share') {
       if (!state.sourceImage) return;
       const orig = state.sourceImage;
       const w = orig.naturalWidth || orig.width;
@@ -1409,24 +1428,30 @@
       const mime = state.exportFormat === 'png' ? 'image/png' : 'image/jpeg';
       const ext = state.exportFormat === 'png' ? 'png' : 'jpg';
       const quality = state.exportFormat === 'png' ? undefined : 0.95;
+      const slug = preset.id.replace(/[^a-z0-9_]/gi, '_');
+      const fileName = `ToneLab_${slug}_${Date.now()}.${ext}`;
 
-      offCanvas.toBlob(blob => {
-        if (!blob) {
-          showToast('Không thể xuất ảnh, thử lại nhé!');
-          return;
+      const blob = await new Promise(resolve => offCanvas.toBlob(resolve, mime, quality));
+      if (!blob) {
+        showToast('Không thể xuất ảnh, thử lại nhé!');
+        return;
+      }
+
+      if (mode === 'share' && navigator.share && navigator.canShare) {
+        const file = new File([blob], fileName, { type: mime });
+        if (navigator.canShare({ files: [file] })) {
+          try {
+            await navigator.share({ files: [file], title: 'ToneLab Studio' });
+            document.getElementById('exportModal').classList.add('hidden');
+            showToast(`Đã xuất ảnh ${outW}×${outH} (${ext.toUpperCase()})`);
+            return;
+          } catch (err) {
+            if (err && err.name === 'AbortError') return;
+          }
         }
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        const slug = preset.id.replace(/[^a-z0-9_]/gi, '_');
-        a.href = url;
-        a.download = `ToneLab_${slug}_${Date.now()}.${ext}`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 4000);
-        document.getElementById('exportModal').classList.add('hidden');
-        showToast(`Đã tải ảnh ${outW}×${outH} (${ext.toUpperCase()})`);
-      }, mime, quality);
+      }
+
+      triggerBlobDownload(blob, fileName, outW, outH, ext);
     }
 
     // =========================================================================
@@ -1618,7 +1643,8 @@
     });
     fmtJpg.addEventListener('click', () => { state.exportFormat = 'jpeg'; updateExportFmtUI(); });
     fmtPng.addEventListener('click', () => { state.exportFormat = 'png'; updateExportFmtUI(); });
-    document.getElementById('btnConfirmExport').addEventListener('click', exportFullResImage);
+    document.getElementById('btnConfirmExport').addEventListener('click', () => exportFullResImage('share'));
+    document.getElementById('btnDownloadFile').addEventListener('click', () => exportFullResImage('download'));
 
     // Resize handling
     window.addEventListener('resize', fitCanvasToStage);
