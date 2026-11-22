@@ -1998,7 +1998,7 @@
           gl.viewport(0, 0, this.fbos.half.w, this.fbos.half.h);
           gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.fbos.base.tex);
           gl.uniform1i(uKT, 0);
-          gl.uniform2f(uKO, 2.2 / this.fbos.half.w, 2.2 / this.fbos.half.h);
+          gl.uniform2f(uKO, (2.2 * normScale) / this.fbos.half.w, (2.2 * normScale) / this.fbos.half.h);
           gl.uniform1f(uKTh, 0.48);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
@@ -2006,7 +2006,7 @@
           gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.quarter.fb);
           gl.viewport(0, 0, this.fbos.quarter.w, this.fbos.quarter.h);
           gl.bindTexture(gl.TEXTURE_2D, this.fbos.half.tex);
-          gl.uniform2f(uKO, 3.2 / this.fbos.quarter.w, 3.2 / this.fbos.quarter.h);
+          gl.uniform2f(uKO, (3.2 * normScale) / this.fbos.quarter.w, (3.2 * normScale) / this.fbos.quarter.h);
           gl.uniform1f(uKTh, 0.0);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
@@ -2014,7 +2014,7 @@
           gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.half.fb);
           gl.viewport(0, 0, this.fbos.half.w, this.fbos.half.h);
           gl.bindTexture(gl.TEXTURE_2D, this.fbos.quarter.tex);
-          gl.uniform2f(uKO, 2.6 / this.fbos.half.w, 2.6 / this.fbos.half.h);
+          gl.uniform2f(uKO, (2.6 * normScale) / this.fbos.half.w, (2.6 * normScale) / this.fbos.half.h);
           gl.uniform1f(uKTh, 0.0);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
@@ -2031,7 +2031,7 @@
           gl.uniform1f(gl.getUniformLocation(this.compProg, 'u_halation'), params.halation || 0);
           gl.uniform1f(gl.getUniformLocation(this.compProg, 'u_starburst'), params.starburst || 0);
           gl.uniform1f(gl.getUniformLocation(this.compProg, 'u_orton'), params.orton || 0);
-          gl.uniform2f(gl.getUniformLocation(this.compProg, 'u_invRes'), 1.0 / this.canvas.width, 1.0 / this.canvas.height);
+          gl.uniform2f(gl.getUniformLocation(this.compProg, 'u_invRes'), normScale / this.canvas.width, normScale / this.canvas.height);
           gl.uniform1i(gl.getUniformLocation(this.compProg, 'u_protCount'), pCnt);
           gl.uniform3fv(gl.getUniformLocation(this.compProg, 'u_protPts'), pArr);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
@@ -2268,7 +2268,24 @@
 
     function invalidateGeoCache() { state.geoRev++; }
 
-    function renderMain() {
+    let _rafRenderId = 0, _renderPending = false;
+    function renderMain(immediate = false) {
+      if (immediate) {
+        if (_rafRenderId) { cancelAnimationFrame(_rafRenderId); _rafRenderId = 0; }
+        _renderPending = false;
+        renderMainNow();
+        return;
+      }
+      if (_renderPending) return;
+      _renderPending = true;
+      _rafRenderId = requestAnimationFrame(() => {
+        _rafRenderId = 0;
+        _renderPending = false;
+        renderMainNow();
+      });
+    }
+
+    function renderMainNow() {
       if (!state.sourceImage) return;
       const needRebuild = state.cachedGeoRev !== state.geoRev || !state.cachedWorking;
       if (needRebuild) {
@@ -2532,6 +2549,7 @@
 
     async function exportQRRecipeCard() {
       if (!state.previewCanvasSrc) return;
+      renderMain(true);
       const codeStr = buildCompactRecipeString();
       const card = document.createElement('canvas');
       card.width = 900; card.height = 1180;
@@ -2751,7 +2769,7 @@
       const ow = img.naturalWidth || img.width, oh = img.naturalHeight || img.height;
       document.getElementById('resLabel').textContent = `• ${ow}×${oh}`;
       document.getElementById('exportResInfo').textContent = `${ow} × ${oh} px`;
-      renderMain(); renderPresetList();
+      renderMain(true); renderPresetList();
       if (state.history.length === 0) pushHistorySnapshot();
       if (toastMsg) showToast(toastMsg);
     }
@@ -3424,6 +3442,10 @@
       document.getElementById('sliderFaceEye').value = 0; document.getElementById('valFaceEye').textContent = '0';
       document.getElementById('sliderFaceNose').value = 0; document.getElementById('valFaceNose').textContent = '0';
       state.leakAngle = 0; state.dustSeed = 1; state.safeZone = 'none';
+      document.querySelectorAll('.sz-btn').forEach(x => {
+        const on = x.dataset.sz === 'none';
+        x.className = `sz-btn px-2 py-0.5 rounded-md border text-[10px] font-semibold ${on ? 'bg-sky-500/20 border-sky-400 text-sky-300' : 'bg-white/5 border-white/10 text-zinc-300'}`;
+      });
       state.healedCanvas = null; state.eraserHistory = []; state.eraser.cloneSrc = null; setInteractiveTool(null);
       state.transform = { cropRatio: 'orig', rotate90: 0, flipH: false, flipV: false };
       state.frameStyle = 'none'; state.dateStampOn = false; document.getElementById('toggleDateStamp').checked = false;
@@ -3684,6 +3706,7 @@
         renderMain();
         return;
       }
+      renderMain(true);
       if (!displayCanvas.width) return;
       const snap = document.createElement('canvas');
       snap.width = glOffCanvas.width || displayCanvas.width;
@@ -3976,6 +3999,7 @@
         showToast('Trình duyệt này chưa hỗ trợ ghi video trực tiếp');
         return;
       }
+      renderMain(true);
       const btn = document.getElementById('btnExportVideo');
       btn.disabled = true; btn.classList.add('opacity-60');
       showToast('Đang quay Video Before/After (4 giây)...');
