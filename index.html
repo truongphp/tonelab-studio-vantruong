@@ -240,11 +240,49 @@
               <button id="btnResetBeauty" type="button" class="text-[11px] text-sky-400 font-medium">Đặt lại</button>
             </div>
             <div id="beautyComboBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5"></div>
+            <div class="p-2 rounded-xl bg-gradient-to-r from-sky-500/15 to-indigo-500/15 border border-sky-400/30 flex items-center justify-between gap-2">
+              <div class="min-w-0">
+                <div class="text-[11px] font-bold text-white flex items-center gap-1.5">
+                  <span>Nét AI (Wink Mode)</span>
+                  <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300">0đ • Không giới hạn</span>
+                </div>
+                <div class="text-[10px] text-zinc-300 truncate">Tái tạo nét vùng mặt mờ / ảnh nén Zalo</div>
+              </div>
+              <button id="btnWinkFaceRestore" type="button" class="h-7 px-2.5 rounded-lg bg-sky-500 hover:bg-sky-400 text-zinc-950 text-[11px] font-bold shrink-0">Làm nét AI</button>
+            </div>
             <div id="beautySlidersContainer" class="space-y-2.5"></div>
           </div>
 
           <!-- Sub: GPU Liquify Face & Smart Leg Stretch -->
           <div id="subBeautyBody" class="hidden flex-1 min-h-0 overflow-y-auto px-3.5 py-2.5 space-y-3">
+            <!-- Container 2: Lazy MediaPipe 468-point Auto Face Sculpt -->
+            <div class="p-2.5 rounded-xl bg-gradient-to-br from-fuchsia-500/15 to-sky-500/10 border border-fuchsia-400/30 space-y-2">
+              <div class="flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                    <span>Tự Bóp Mặt AI (468 điểm)</span>
+                    <span id="faceAiBadge" class="text-[9px] px-1.5 py-0.5 rounded bg-white/10 text-zinc-300">Chưa quét</span>
+                  </div>
+                  <div class="text-[10px] text-zinc-300 truncate">Tự khóa mắt/tóc & kéo thanh không cần đẩy tay</div>
+                </div>
+                <button id="btnScanFaceAi" type="button" class="h-7 px-2.5 rounded-lg bg-fuchsia-500 hover:bg-fuchsia-400 text-white text-[11px] font-bold shrink-0">Quét mặt</button>
+              </div>
+              <div class="grid grid-cols-3 gap-2 pt-0.5">
+                <div class="space-y-0.5">
+                  <div class="flex justify-between text-[10px] text-zinc-300"><span>V-line</span><span id="valFaceSlim" class="text-fuchsia-300 font-semibold">0</span></div>
+                  <input id="sliderFaceSlim" type="range" min="0" max="100" value="0" class="w-full" />
+                </div>
+                <div class="space-y-0.5">
+                  <div class="flex justify-between text-[10px] text-zinc-300"><span>To mắt</span><span id="valFaceEye" class="text-fuchsia-300 font-semibold">0</span></div>
+                  <input id="sliderFaceEye" type="range" min="0" max="100" value="0" class="w-full" />
+                </div>
+                <div class="space-y-0.5">
+                  <div class="flex justify-between text-[10px] text-zinc-300"><span>Gọn mũi</span><span id="valFaceNose" class="text-fuchsia-300 font-semibold">0</span></div>
+                  <input id="sliderFaceNose" type="range" min="0" max="100" value="0" class="w-full" />
+                </div>
+              </div>
+            </div>
+
             <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between gap-2">
               <div class="min-w-0">
                 <div class="text-xs font-semibold text-white">Bóp Mặt V-line & Eo (GPU 60fps)</div>
@@ -371,8 +409,16 @@
                 <input id="sliderBgBlur" type="range" min="0" max="100" value="0" class="w-full" />
               </div>
               <div class="space-y-1">
+                <div class="flex justify-between text-[11px]"><span class="text-zinc-300 font-medium">Sáng chủ thể (tách riêng nền)</span><span id="valFgBright" class="text-sky-400 font-semibold">0%</span></div>
+                <input id="sliderFgBright" type="range" min="-50" max="100" value="0" class="w-full" />
+              </div>
+              <div class="space-y-1">
                 <div class="flex justify-between text-[11px]"><span class="text-zinc-300 font-medium">Dìm tối & Khử màu nền</span><span id="valBgDim" class="text-sky-400 font-semibold">0%</span></div>
                 <input id="sliderBgDim" type="range" min="0" max="100" value="0" class="w-full" />
+              </div>
+              <div class="space-y-1">
+                <div class="flex justify-between text-[11px]"><span class="text-zinc-300 font-medium">Ám xanh lạnh hậu cảnh</span><span id="valBgCool" class="text-sky-400 font-semibold">0%</span></div>
+                <input id="sliderBgCool" type="range" min="0" max="100" value="0" class="w-full" />
               </div>
             </div>
           </div>
@@ -470,6 +516,14 @@
               </div>
             </div>
             <div id="cropRatioGrid" class="grid grid-cols-5 gap-1.5"></div>
+            <div class="flex items-center justify-between pt-1.5">
+              <span class="text-[11px] font-medium text-zinc-300">Lưới Safe-Zone (chống che chữ)</span>
+              <div id="safeZoneBar" class="flex items-center gap-1">
+                <button type="button" data-sz="none" class="sz-btn px-2 py-0.5 rounded-md border text-[10px] font-semibold bg-sky-500/20 border-sky-400 text-sky-300">Tắt</button>
+                <button type="button" data-sz="tiktok" class="sz-btn px-2 py-0.5 rounded-md border text-[10px] font-semibold bg-white/5 border-white/10 text-zinc-300">TikTok 9:16</button>
+                <button type="button" data-sz="locket" class="sz-btn px-2 py-0.5 rounded-md border text-[10px] font-semibold bg-white/5 border-white/10 text-zinc-300">Locket 1:1</button>
+              </div>
+            </div>
           </div>
 
           <div class="space-y-1.5 pt-2 border-t border-white/10">
@@ -600,6 +654,7 @@
       </div>
       <div class="space-y-2">
         <button id="btnConfirmExport" type="button" class="w-full py-2.5 rounded-xl bg-sky-500 hover:bg-sky-400 text-zinc-950 font-bold text-xs flex items-center justify-center gap-2"><i data-lucide="share" class="w-4 h-4"></i><span>Lưu vào Album Ảnh (Chia sẻ)</span></button>
+        <button id="btnExportVideo" type="button" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-[#fe2c55] via-pink-500 to-sky-500 text-white font-bold text-xs flex items-center justify-center gap-2 shadow"><i data-lucide="film" class="w-4 h-4"></i><span>Xuất Video Before/After (TikTok 4s)</span></button>
         <button id="btnBatchExport" type="button" class="hidden w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-indigo-500 text-white font-bold text-xs flex items-center justify-center gap-2"><i data-lucide="layers" class="w-4 h-4"></i><span id="batchExportLabel">Xuất hàng loạt</span></button>
         <button id="btnDownloadFile" type="button" class="w-full py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 font-medium text-[11px] flex items-center justify-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5"></i><span>Tải dưới dạng tệp (Files / PC)</span></button>
       </div>
@@ -887,10 +942,12 @@
     ];
 
     const EFFECT_DEFS = [
-      { key: 'glow', label: 'Dreamy Glow (Hào quang nàng thơ)', min: 0, max: 100 },
+      { key: 'glow', label: 'Pro-Mist Bloom (Sáng loang mịn)', min: 0, max: 100 },
+      { key: 'halation', label: 'Halation Viền Đỏ (Chất Film thật)', min: 0, max: 100 },
+      { key: 'ca', label: 'Quang Sai Rìa (Ống kính CCD)', min: 0, max: 100 },
       { key: 'leak', label: 'Ánh nắng ấm (Sun Flare)', min: 0, max: 100 },
       { key: 'fade', label: 'Nhạt màu lì (Matte Film)', min: 0, max: 100 },
-      { key: 'grain', label: 'Hạt Film Retro (Grain)', min: 0, max: 100 },
+      { key: 'grain', label: 'Hạt Film Theo Vùng Sáng (Grain)', min: 0, max: 100 },
       { key: 'vignette', label: 'Tối 4 góc (Vignette)', min: 0, max: 100 }
     ];
 
@@ -923,7 +980,7 @@
       manual: {
         skinSmooth: 0, skinWhiten: 0, skinRosy: 0, hdSharpen: 0,
         exposure: 0, contrast: 0, temp: 0, sat: 0,
-        glow: 0, leak: 0, fade: 0, grain: 0, vignette: 0
+        glow: 0, halation: 0, ca: 0, leak: 0, fade: 0, grain: 0, vignette: 0
       },
       hslChannel: 0,
       customHslH: [0,0,0,0,0,0,0,0],
@@ -935,7 +992,15 @@
       leg: { stretch: 0, startY: 0.58 },
       light3d: { on: false, presetId: 'sunset', rgb: [1.0, 0.56, 0.22], intensity: 0.60, radius: 0.55, x: 0.25, y: 0.20 },
       text: { content: '', fontId: 'dancing', effect: 'glow', color: '#ffffff', glowColor: '#7dd3fc', behindSubject: false, size: 14, rot: 0, x: 50, y: 32 },
-      cutout: { maskCanvas: null, bgBlur: 0, bgDim: 0 },
+      cutout: { maskCanvas: null, bgBlur: 0, bgDim: 0, fgBright: 0, bgCool: 0 },
+      faceAi: { scanned: false, slim: 0, eye: 0, nose: 0, landmarks: null, box: null, protectPts: [] },
+      safeZone: 'none',
+      batchAutoMatch: false,
+      batchRefStats: null,
+      geoRev: 1,
+      cachedGeoRev: -1,
+      cachedWorking: null,
+      cachedSrcLabStats: null,
       eraser: { active: false, mode: 'patch', brushSize: 24, cloneSrc: null, pickingClone: false },
       transform: { cropRatio: 'orig', rotate90: 0, flipH: false, flipV: false },
       frameStyle: 'none',
@@ -1037,6 +1102,22 @@
       const hslSat = chNames.map(c => (getAttr('SaturationAdjustment' + c) || 0) * 0.01);
       const hslLum = chNames.map(c => (getAttr('LuminanceAdjustment' + c) || 0) * 0.01);
       const name = fileName.replace(/\.(xmp|xml)$/i, '').slice(0, 22) || 'XMP Imported';
+      const hueToTint = (deg, satPct) => {
+        if (!satPct) return [0, 0, 0];
+        const h = ((deg % 360) + 360) % 360 / 60;
+        const c = Math.min(1, satPct / 100) * 0.09;
+        const x = c * (1 - Math.abs((h % 2) - 1));
+        if (h < 1) return [c, x, 0];
+        if (h < 2) return [x, c, 0];
+        if (h < 3) return [0, c, x];
+        if (h < 4) return [0, x, c];
+        if (h < 5) return [x, 0, c];
+        return [c, 0, x];
+      };
+      const shH = getAttr('SplitToningShadowHue') || getAttr('ColorGradeShadowHue') || 0;
+      const shS = getAttr('SplitToningShadowSaturation') || getAttr('ColorGradeShadowSat') || 0;
+      const hiH = getAttr('SplitToningHighlightHue') || getAttr('ColorGradeHighlightHue') || 0;
+      const hiS = getAttr('SplitToningHighlightSaturation') || getAttr('ColorGradeHighlightSat') || 0;
       return makePreset({
         id: 'xmp_' + Date.now(), name, cat: 'custom',
         exposure: Math.max(-1, Math.min(1, (getAttr('Exposure2012') || 0) * 0.35)),
@@ -1051,6 +1132,8 @@
         grain: Math.max(0, (getAttr('GrainAmount') || 0) * 0.0014),
         vignette: Math.max(0, -(getAttr('PostCropVignetteAmount') || 0) * 0.006),
         hslHue, hslSat, hslLum,
+        shTint: hueToTint(shH, shS),
+        hiTint: hueToTint(hiH, hiS),
         swatch: ['#10b981', '#38bdf8', '#f8fafc']
       });
     }
@@ -1225,25 +1308,43 @@
       precision highp float;
       uniform sampler2D u_tex;
       uniform sampler2D u_lutTex;
+      uniform sampler2D u_maskTex;
+      uniform float u_maskOn;
+      uniform float u_fgBright;
+      uniform float u_bgDim;
+      uniform float u_bgCool;
       uniform float u_lutSize;
       uniform float u_lutStrength;
       uniform vec2 u_texelSize;
+      uniform float u_aspect;
       uniform float u_intensity;
 
+      // GPU CIE L*a*b* Color Match (Zero CPU main-thread bottleneck!)
+      uniform float u_cmOn;
+      uniform vec3 u_cmSrcMean;
+      uniform vec3 u_cmSrcStd;
+      uniform vec3 u_cmRefMean;
+      uniform vec3 u_cmRefStd;
+      uniform float u_cmStr;
+
       uniform float u_exposure, u_contrast, u_highlights, u_shadows, u_blacks;
-      uniform float u_temp, u_tint, u_sat, u_vibrance, u_clarity, u_grain, u_vignette, u_glow, u_leak;
+      uniform float u_temp, u_tint, u_sat, u_vibrance, u_clarity, u_grain, u_vignette, u_glow, u_halation, u_ca, u_leak;
       uniform float u_skinSmooth, u_skinWhiten, u_skinRosy, u_hdSharpen;
       uniform float u_hslHue[8], u_hslSat[8], u_hslLum[8];
       uniform vec3 u_shTint, u_hiTint;
 
-      // GPU Liquify (up to 12 strokes) + Smart Leg Stretch
+      // GPU Liquify (20 slots: 12 manual + 8 Auto Face AI) & Leg Stretch
       uniform int u_liqCount;
-      uniform vec2 u_liqFrom[12];
-      uniform vec2 u_liqTo[12];
-      uniform float u_liqRad[12];
-      uniform float u_liqStr[12];
+      uniform vec2 u_liqFrom[20];
+      uniform vec2 u_liqTo[20];
+      uniform float u_liqRad[20];
+      uniform float u_liqStr[20];
       uniform float u_legStretch;
       uniform float u_legStart;
+
+      // Face AI Eyes/Lips protection points (up to 4)
+      uniform int u_protCount;
+      uniform vec3 u_protPts[4]; // xy = center, z = radius
 
       // Virtual 3D Studio Relighting
       uniform float u_lightOn;
@@ -1253,6 +1354,12 @@
       uniform float u_lightRad;
 
       varying vec2 v_uv;
+
+      vec3 srgbToLinear(vec3 c) { return pow(max(c, vec3(0.0)), vec3(2.2)); }
+      vec3 linearToSrgb(vec3 c) { return pow(max(c, vec3(0.0)), vec3(1.0 / 2.2)); }
+      vec3 acesFilmic(vec3 x) {
+        return clamp((x * (2.51 * x + 0.03)) / (x * (2.43 * x + 0.59) + 0.14), 0.0, 1.0);
+      }
 
       vec3 rgb2hsl(vec3 c) {
         float maxC = max(max(c.r, c.g), c.b), minC = min(min(c.r, c.g), c.b);
@@ -1293,13 +1400,36 @@
              * smoothstep(0.12, 0.30, dot(c, vec3(0.299, 0.587, 0.114)));
       }
 
-      // GPU Trilinear 3D LUT Lookup from 2D strip texture (N*N x N)
+      // Fast GPU CIE L*a*b* conversion for zero-lag Color Match
+      vec3 rgb2lab(vec3 c) {
+        vec3 lin = srgbToLinear(c);
+        vec3 xyz = vec3(
+          (lin.r * 0.4124 + lin.g * 0.3576 + lin.b * 0.1805) / 0.95047,
+          (lin.r * 0.2126 + lin.g * 0.7152 + lin.b * 0.0722),
+          (lin.r * 0.0193 + lin.g * 0.1192 + lin.b * 0.9505) / 1.08883
+        );
+        vec3 f = mix(7.787 * xyz + 16.0 / 116.0, pow(max(xyz, vec3(1e-6)), vec3(1.0 / 3.0)), step(vec3(0.008856), xyz));
+        return vec3(116.0 * f.y - 16.0, 500.0 * (f.x - f.y), 200.0 * (f.y - f.z));
+      }
+      vec3 lab2rgb(vec3 lab) {
+        float y = (lab.x + 16.0) / 116.0;
+        float x = lab.y / 500.0 + y;
+        float z = y - lab.z / 200.0;
+        vec3 f = vec3(x, y, z);
+        vec3 f3 = f * f * f;
+        vec3 xyz = mix((f - 16.0 / 116.0) / 7.787, f3, step(vec3(0.008856), f3)) * vec3(0.95047, 1.0, 1.08883);
+        vec3 lin = vec3(
+          xyz.x * 3.2406 - xyz.y * 1.5372 - xyz.z * 0.4986,
+         -xyz.x * 0.9689 + xyz.y * 1.8758 + xyz.z * 0.0415,
+          xyz.x * 0.0557 - xyz.y * 0.2040 + xyz.z * 1.0570
+        );
+        return clamp(linearToSrgb(clamp(lin, 0.0, 1.0)), 0.0, 1.0);
+      }
+
       vec3 applyCubeLut(vec3 col) {
         float N = u_lutSize;
         float bScaled = clamp(col.b, 0.0, 1.0) * (N - 1.0);
-        float b0 = floor(bScaled);
-        float b1 = min(N - 1.0, b0 + 1.0);
-        float fracB = bScaled - b0;
+        float b0 = floor(bScaled), b1 = min(N - 1.0, b0 + 1.0), fracB = bScaled - b0;
         float rCoord = (clamp(col.r, 0.0, 1.0) * (N - 1.0) + 0.5) / (N * N);
         float gCoord = (clamp(col.g, 0.0, 1.0) * (N - 1.0) + 0.5) / N;
         vec3 s0 = texture2D(u_lutTex, vec2(b0 / N + rCoord, gCoord)).rgb;
@@ -1308,61 +1438,105 @@
       }
 
       void main() {
-        // 0. GPU Smart Leg Stretch + Liquify UV Displacement
+        // 0. GPU Smart Leg Stretch + 20-Slot Liquify (Manual + Auto Face AI)
         vec2 uv = v_uv;
         if (u_legStretch > 0.001 && uv.y > u_legStart) {
           float t = (uv.y - u_legStart) / max(0.05, 1.0 - u_legStart);
-          float compY = u_legStart + (t / (1.0 + u_legStretch)) * (1.0 - u_legStart);
-          uv.y = clamp(compY, 0.0, 1.0);
+          uv.y = clamp(u_legStart + (t / (1.0 + u_legStretch)) * (1.0 - u_legStart), 0.0, 1.0);
         }
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 20; i++) {
           if (i >= u_liqCount) break;
           vec2 delta = u_liqTo[i] - u_liqFrom[i];
           float dist = distance(uv, u_liqTo[i]);
           float r = max(0.01, u_liqRad[i]);
           if (dist < r) {
             float k = 1.0 - (dist / r);
-            float weight = k * k * u_liqStr[i];
-            uv -= delta * weight;
+            uv -= delta * (k * k * u_liqStr[i]);
           }
         }
         uv = clamp(uv, 0.0, 1.0);
 
-        vec3 c = texture2D(u_tex, uv).rgb;
+        // Edge Chromatic Aberration (CCD Lens Optics)
+        vec3 c;
+        if (u_ca > 0.001) {
+          vec2 dir = (uv - 0.5) * u_ca * 0.014;
+          c = vec3(
+            texture2D(u_tex, clamp(uv + dir, 0.0, 1.0)).r,
+            texture2D(u_tex, uv).g,
+            texture2D(u_tex, clamp(uv - dir, 0.0, 1.0)).b
+          );
+        } else {
+          c = texture2D(u_tex, uv).rgb;
+        }
 
-        // 1. Bilateral Skin Smoothing
+        // GPU CIE L*a*b* Color Match (or Batch Auto-Match)
+        if (u_cmOn > 0.5 && u_cmStr > 0.001) {
+          vec3 lab = rgb2lab(c);
+          vec3 ratio = clamp(u_cmRefStd / max(u_cmSrcStd, vec3(1.0)), vec3(0.5), vec3(1.6));
+          vec3 matched = lab2rgb((lab - u_cmSrcMean) * ratio + u_cmRefMean);
+          c = mix(c, matched, clamp(u_cmStr, 0.0, 1.0));
+        }
+
+        // 1. Frequency Separation Skin Smoothing (keeps pores/eyes/hair crisp!)
         if (u_skinSmooth > 0.001) {
           float skinW = detectSkin(c);
+          // Face AI Eye/Lip protection
+          for (int i = 0; i < 4; i++) {
+            if (i >= u_protCount) break;
+            float pd = distance(uv, u_protPts[i].xy);
+            skinW *= smoothstep(u_protPts[i].z * 0.65, u_protPts[i].z * 1.25, pd);
+          }
           if (skinW > 0.01) {
-            vec3 sum = c; float wSum = 1.0;
+            vec3 lowSum = c; float wSum = 1.0;
             vec2 offs[8];
             offs[0]=vec2(-1.0,-1.0); offs[1]=vec2(0.0,-1.0); offs[2]=vec2(1.0,-1.0);
             offs[3]=vec2(-1.0, 0.0);                         offs[4]=vec2(1.0, 0.0);
             offs[5]=vec2(-1.0, 1.0); offs[6]=vec2(0.0, 1.0); offs[7]=vec2(1.0, 1.0);
             for (int i = 0; i < 8; i++) {
-              vec3 s = texture2D(u_tex, clamp(uv + offs[i] * u_texelSize * 2.2, 0.0, 1.0)).rgb;
-              float w = exp(-dot(s - c, s - c) * 65.0);
-              sum += s * w; wSum += w;
+              vec3 s = texture2D(u_tex, clamp(uv + offs[i] * u_texelSize * 2.4, 0.0, 1.0)).rgb;
+              float w = exp(-dot(s - c, s - c) * 55.0);
+              lowSum += s * w; wSum += w;
             }
-            c = mix(c, sum / wSum, skinW * u_skinSmooth * 0.85);
+            vec3 lowFreq = lowSum / wSum;
+            vec3 highFreq = c - lowFreq;
+            // Re-inject micro pore texture (42%) so skin looks studio-real, never plastic
+            vec3 freqMerged = clamp(lowFreq + highFreq * (0.42 - u_skinSmooth * 0.14), 0.0, 1.0);
+            c = mix(c, freqMerged, skinW * u_skinSmooth * 0.88);
           }
         }
 
-        // 2. Wink HD Sharpen + Clarity
-        float totalSharp = u_clarity + u_hdSharpen * 1.1;
+        // 2. Nét HD Pro (De-block + Multi-Scale Sharpen, resolution-independent)
+        float totalSharp = u_clarity + u_hdSharpen * 1.15;
         if (totalSharp > 0.001) {
-          vec3 blur = (
+          vec3 b1 = (
             texture2D(u_tex, clamp(uv + vec2(u_texelSize.x, 0.0), 0.0, 1.0)).rgb +
             texture2D(u_tex, clamp(uv - vec2(u_texelSize.x, 0.0), 0.0, 1.0)).rgb +
             texture2D(u_tex, clamp(uv + vec2(0.0, u_texelSize.y), 0.0, 1.0)).rgb +
             texture2D(u_tex, clamp(uv - vec2(0.0, u_texelSize.y), 0.0, 1.0)).rgb
           ) * 0.25;
+          vec3 b2 = (
+            texture2D(u_tex, clamp(uv + vec2(u_texelSize.x * 2.2, u_texelSize.y * 2.2), 0.0, 1.0)).rgb +
+            texture2D(u_tex, clamp(uv + vec2(-u_texelSize.x * 2.2, u_texelSize.y * 2.2), 0.0, 1.0)).rgb +
+            texture2D(u_tex, clamp(uv + vec2(u_texelSize.x * 2.2, -u_texelSize.y * 2.2), 0.0, 1.0)).rgb +
+            texture2D(u_tex, clamp(uv + vec2(-u_texelSize.x * 2.2, -u_texelSize.y * 2.2), 0.0, 1.0)).rgb
+          ) * 0.25;
+          vec3 fineD = c - b1;
+          vec3 medD = b1 - b2;
+          // Suppress tiny JPEG compression noise while boosting real edges
+          float edgeGate = smoothstep(0.008, 0.045, length(fineD));
           float lumMask = 1.0 - abs(dot(c, vec3(0.299, 0.587, 0.114)) * 2.0 - 1.0);
-          c = clamp(c + (c - blur) * totalSharp * (0.65 + 0.55 * lumMask), 0.0, 1.0);
+          c = clamp(c + (fineD * edgeGate * 0.85 + medD * 0.45) * totalSharp * (0.65 + 0.55 * lumMask), 0.0, 1.0);
         }
 
-        // 3. Tone + HSL + Split Toning
-        vec3 graded = clamp(c * pow(2.0, u_exposure * 1.35), 0.0, 1.0);
+        // 3. Linear Space Exposure + Filmic Highlight Roll-Off + HSL + Split Toning
+        vec3 lin = srgbToLinear(c);
+        lin *= pow(2.0, u_exposure * 1.25);
+        // Subtle ACES Filmic roll-off prevents blown-out highlights when pushing exposure
+        if (u_exposure > 0.05 || u_highlights > 0.05) {
+          vec3 filmic = acesFilmic(lin * 1.15);
+          lin = mix(lin, filmic, 0.28);
+        }
+        vec3 graded = clamp(linearToSrgb(clamp(lin, 0.0, 1.5)), 0.0, 1.0);
         graded.r = clamp(graded.r + u_temp * 0.18 + u_tint * 0.08, 0.0, 1.0);
         graded.g = clamp(graded.g - u_tint * 0.10, 0.0, 1.0);
         graded.b = clamp(graded.b - u_temp * 0.18 + u_tint * 0.08, 0.0, 1.0);
@@ -1391,12 +1565,27 @@
         graded = clamp(graded + u_shTint * (1.0 - smoothstep(0.0, 0.65, luma3)) + u_hiTint * smoothstep(0.35, 1.0, luma3), 0.0, 1.0);
         c = mix(c, graded, clamp(u_intensity, 0.0, 1.0));
 
-        // 4. External .CUBE 3D LUT (Trilinear GPU)
+        // 4. External .CUBE 3D LUT
         if (u_lutSize > 1.5 && u_lutStrength > 0.001) {
           c = mix(c, applyCubeLut(c), clamp(u_lutStrength, 0.0, 1.0));
         }
 
-        // 5. Skin Whiten & Rosy
+        // 5. Synchronized Local Subject / Background Masking (warps with Liquify!)
+        if (u_maskOn > 0.5) {
+          float m = texture2D(u_maskTex, uv).a;
+          if (abs(u_fgBright) > 0.001) {
+            c = mix(c, clamp(c * pow(2.0, u_fgBright * 0.7), 0.0, 1.0), m);
+          }
+          if (u_bgDim > 0.001 || u_bgCool > 0.001) {
+            float bgL = dot(c, vec3(0.2126, 0.7152, 0.0722));
+            vec3 bgCol = mix(c, vec3(bgL), u_bgDim * 0.75) * (1.0 - u_bgDim * 0.55);
+            bgCol.r = clamp(bgCol.r - u_bgCool * 0.07, 0.0, 1.0);
+            bgCol.b = clamp(bgCol.b + u_bgCool * 0.12, 0.0, 1.0);
+            c = mix(bgCol, c, m);
+          }
+        }
+
+        // 6. Skin Whiten & Rosy
         if (u_skinWhiten > 0.001 || u_skinRosy > 0.001) {
           float sw = detectSkin(c);
           if (sw > 0.01) {
@@ -1407,7 +1596,7 @@
           }
         }
 
-        // 6. Virtual 3D Studio Relighting (Normal-estimated surface wrap)
+        // 7. Virtual 3D Studio Relighting
         if (u_lightOn > 0.5 && u_lightInt > 0.001) {
           float lx1 = dot(texture2D(u_tex, clamp(uv + vec2(u_texelSize.x * 2.0, 0.0), 0.0, 1.0)).rgb, vec3(0.299, 0.587, 0.114));
           float lx0 = dot(texture2D(u_tex, clamp(uv - vec2(u_texelSize.x * 2.0, 0.0), 0.0, 1.0)).rgb, vec3(0.299, 0.587, 0.114));
@@ -1422,26 +1611,66 @@
           c = 1.0 - (1.0 - c) * (1.0 - clamp(lightAdd, 0.0, 0.85));
         }
 
-        // 7. Dreamy Glow, Sun Leak, Grain, Vignette
-        if (u_glow > 0.001) {
-          vec3 bloom = (
-            texture2D(u_tex, clamp(uv + vec2(4.0, 4.0) * u_texelSize, 0.0, 1.0)).rgb +
-            texture2D(u_tex, clamp(uv + vec2(-4.0, 4.0) * u_texelSize, 0.0, 1.0)).rgb +
-            texture2D(u_tex, clamp(uv + vec2(4.0, -4.0) * u_texelSize, 0.0, 1.0)).rgb +
-            texture2D(u_tex, clamp(uv + vec2(-4.0, -4.0) * u_texelSize, 0.0, 1.0)).rgb
-          ) * 0.25;
-          vec3 glowCol = bloom * smoothstep(0.45, 0.95, dot(bloom, vec3(0.299, 0.587, 0.114)));
-          c = 1.0 - (1.0 - c) * (1.0 - glowCol * u_glow * 0.65);
-        }
+        // 8. Sun Leak, Midtone-Weighted Aspect-Consistent Film Grain & Vignette
         if (u_leak > 0.001) {
           vec3 flare = vec3(1.0, 0.62, 0.28) * exp(-length(uv - vec2(0.92, 0.08)) * 2.8)
                      + vec3(1.0, 0.42, 0.22) * exp(-length(uv - vec2(0.10, 0.88)) * 3.5) * 0.5;
           c = clamp(c + flare * u_leak * 0.55, 0.0, 1.0);
         }
-        if (u_grain > 0.001) c = clamp(c + vec3((hash12(uv * 1000.0) - 0.5) * u_grain * 1.4), 0.0, 1.0);
+        if (u_grain > 0.001) {
+          float gLum = dot(c, vec3(0.299, 0.587, 0.114));
+          float midW = 0.35 + 0.65 * (1.0 - abs(gLum * 2.0 - 1.0));
+          float nVal = (hash12(vec2(uv.x * 880.0 * u_aspect, uv.y * 880.0)) - 0.5) * u_grain * 1.45 * midW;
+          c = clamp(c + vec3(nVal), 0.0, 1.0);
+        }
         if (u_vignette > 0.001) c *= (1.0 - smoothstep(0.32, 0.92, distance(uv, vec2(0.5))) * u_vignette * 0.85);
 
         gl_FragColor = vec4(clamp(c, 0.0, 1.0), 1.0);
+      }
+    `;
+
+    // Multi-Pass Dual-Kawase Bloom & Red Halation Shaders
+    const FRAG_KAWASE = `
+      precision highp float;
+      uniform sampler2D u_tex;
+      uniform vec2 u_offset;
+      uniform float u_thresh;
+      varying vec2 v_uv;
+      void main() {
+        vec3 s = (
+          texture2D(u_tex, clamp(v_uv + vec2( u_offset.x,  u_offset.y), 0.0, 1.0)).rgb +
+          texture2D(u_tex, clamp(v_uv + vec2(-u_offset.x,  u_offset.y), 0.0, 1.0)).rgb +
+          texture2D(u_tex, clamp(v_uv + vec2( u_offset.x, -u_offset.y), 0.0, 1.0)).rgb +
+          texture2D(u_tex, clamp(v_uv + vec2(-u_offset.x, -u_offset.y), 0.0, 1.0)).rgb
+        ) * 0.25;
+        if (u_thresh > 0.01) {
+          float l = dot(s, vec3(0.299, 0.587, 0.114));
+          s *= smoothstep(u_thresh, 1.0, l);
+        }
+        gl_FragColor = vec4(s, 1.0);
+      }
+    `;
+
+    const FRAG_COMPOSITE = `
+      precision highp float;
+      uniform sampler2D u_baseTex;
+      uniform sampler2D u_bloomTex;
+      uniform float u_glow;
+      uniform float u_halation;
+      varying vec2 v_uv;
+      void main() {
+        vec3 base = texture2D(u_baseTex, v_uv).rgb;
+        vec3 bloom = texture2D(u_bloomTex, v_uv).rgb;
+        vec3 outC = base;
+        if (u_glow > 0.001) {
+          outC = 1.0 - (1.0 - outC) * (1.0 - bloom * u_glow * 0.72);
+        }
+        if (u_halation > 0.001) {
+          // Real CineStill-style red/amber halation halo around bright highlights
+          vec3 hal = vec3(bloom.r * 1.15, bloom.g * 0.32, bloom.b * 0.08) * u_halation * 0.85;
+          outC = 1.0 - (1.0 - outC) * (1.0 - clamp(hal, 0.0, 0.85));
+        }
+        gl_FragColor = vec4(clamp(outC, 0.0, 1.0), 1.0);
       }
     `;
 
@@ -1450,8 +1679,10 @@
         this.canvas = canvas;
         this.gl = canvas.getContext('webgl2', { preserveDrawingBuffer: true, antialias: false })
                || canvas.getContext('webgl', { preserveDrawingBuffer: true, antialias: false });
-        this.ready = false; this.texture = null; this.lutTexture = null; this.lutSize = 0;
+        this.ready = false; this.texture = null; this.lutTexture = null; this.maskTexture = null;
+        this.lutSize = 0; this.hasMask = false;
         this.texWidth = 1; this.texHeight = 1;
+        this.fbos = null;
         if (this.gl) this.initGL();
       }
       compile(type, src) {
@@ -1459,36 +1690,54 @@
         gl.shaderSource(sh, src); gl.compileShader(sh);
         return gl.getShaderParameter(sh, gl.COMPILE_STATUS) ? sh : null;
       }
-      initGL() {
+      buildProgram(vsSrc, fsSrc) {
         const gl = this.gl;
-        const vs = this.compile(gl.VERTEX_SHADER, VERT_SRC), fs = this.compile(gl.FRAGMENT_SHADER, FRAG_SRC);
-        if (!vs || !fs) return;
+        const vs = this.compile(gl.VERTEX_SHADER, vsSrc), fs = this.compile(gl.FRAGMENT_SHADER, fsSrc);
+        if (!vs || !fs) return null;
         const prog = gl.createProgram();
         gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
-        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
-        this.prog = prog; gl.useProgram(prog);
+        return gl.getProgramParameter(prog, gl.LINK_STATUS) ? prog : null;
+      }
+      initGL() {
+        const gl = this.gl;
+        this.prog = this.buildProgram(VERT_SRC, FRAG_SRC);
+        this.kawaseProg = this.buildProgram(VERT_SRC, FRAG_KAWASE);
+        this.compProg = this.buildProgram(VERT_SRC, FRAG_COMPOSITE);
+        if (!this.prog) return;
 
-        const buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        this.vbo = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vbo);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,0,1, 1,-1,1,1, -1,1,0,0, 1,1,1,0]), gl.STATIC_DRAW);
-        const aPos = gl.getAttribLocation(prog, 'a_pos'), aUv = gl.getAttribLocation(prog, 'a_uv');
-        gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
-        gl.enableVertexAttribArray(aUv); gl.vertexAttribPointer(aUv, 2, gl.FLOAT, false, 16, 8);
+        this.vboFbo = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.vboFbo);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,0,0, 1,-1,1,0, -1,1,0,1, 1,1,1,1]), gl.STATIC_DRAW);
 
         const names = [
-          'tex','lutTex','lutSize','lutStrength','texelSize','intensity',
-          'exposure','contrast','highlights','shadows','blacks','temp','tint','sat','vibrance','clarity','grain','vignette','glow','leak',
+          'tex','lutTex','maskTex','maskOn','fgBright','bgDim','bgCool','lutSize','lutStrength','texelSize','aspect','intensity',
+          'cmOn','cmSrcMean','cmSrcStd','cmRefMean','cmRefStd','cmStr',
+          'exposure','contrast','highlights','shadows','blacks','temp','tint','sat','vibrance','clarity','grain','vignette','glow','halation','ca','leak',
           'skinSmooth','skinWhiten','skinRosy','hdSharpen','hslHue','hslSat','hslLum','shTint','hiTint',
           'liqCount','liqFrom','liqTo','liqRad','liqStr','legStretch','legStart',
+          'protCount','protPts',
           'lightOn','lightPos','lightCol','lightInt','lightRad'
         ];
-        this.u = {}; names.forEach(n => { this.u[n] = gl.getUniformLocation(prog, 'u_' + n); });
+        this.u = {}; names.forEach(n => { this.u[n] = gl.getUniformLocation(this.prog, 'u_' + n); });
 
         this.texture = this.makeTex();
         this.lutTexture = this.makeTex();
+        this.maskTexture = this.makeTex();
         gl.bindTexture(gl.TEXTURE_2D, this.lutTexture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0,0,0,255]));
+        gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([255,255,255,255]));
         this.ready = true;
+      }
+      bindQuad(prog, useFboUv = false) {
+        const gl = this.gl;
+        gl.bindBuffer(gl.ARRAY_BUFFER, useFboUv ? this.vboFbo : this.vbo);
+        const aPos = gl.getAttribLocation(prog, 'a_pos'), aUv = gl.getAttribLocation(prog, 'a_uv');
+        gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 16, 0);
+        gl.enableVertexAttribArray(aUv); gl.vertexAttribPointer(aUv, 2, gl.FLOAT, false, 16, 8);
       }
       makeTex() {
         const gl = this.gl, t = gl.createTexture();
@@ -1498,6 +1747,36 @@
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
         return t;
+      }
+      makeFBO(w, h) {
+        const gl = this.gl;
+        const tex = this.makeTex();
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, w, h, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        const fb = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fb);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, tex, 0);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        return { fb, tex, w, h };
+      }
+      ensureFBOs(w, h) {
+        if (this.fbos && this.fbos.base.w === w && this.fbos.base.h === h) return;
+        this.disposeFBOs();
+        const hw = Math.max(32, Math.round(w * 0.5)), hh = Math.max(32, Math.round(h * 0.5));
+        const qw = Math.max(16, Math.round(w * 0.25)), qh = Math.max(16, Math.round(h * 0.25));
+        this.fbos = { base: this.makeFBO(w, h), half: this.makeFBO(hw, hh), quarter: this.makeFBO(qw, qh) };
+      }
+      disposeFBOs() {
+        if (!this.fbos || !this.gl) return;
+        const gl = this.gl;
+        Object.values(this.fbos).forEach(o => { gl.deleteFramebuffer(o.fb); gl.deleteTexture(o.tex); });
+        this.fbos = null;
+      }
+      disposeAll() {
+        this.disposeFBOs();
+        if (this.gl) {
+          const ext = this.gl.getExtension('WEBGL_lose_context');
+          if (ext) ext.loseContext();
+        }
       }
       uploadSource(imgOrCanvas) {
         if (!this.ready) return;
@@ -1515,17 +1794,57 @@
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, this.lutTexture);
         gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, stripCanvas);
       }
+      uploadMask(maskCanvas) {
+        if (!this.ready) return;
+        const gl = this.gl;
+        if (!maskCanvas) { this.hasMask = false; return; }
+        this.hasMask = true;
+        gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, this.maskTexture);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, maskCanvas);
+      }
       render(params, intensity = 1.0, lutStrength = 0) {
         if (!this.ready || !this.texture) return;
         const gl = this.gl;
+        const needMultiPass = this.kawaseProg && this.compProg && ((params.glow || 0) > 0.005 || (params.halation || 0) > 0.005);
+
+        if (needMultiPass) {
+          this.ensureFBOs(this.canvas.width, this.canvas.height);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.base.fb);
+        } else {
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        }
+
         gl.useProgram(this.prog);
+        this.bindQuad(this.prog);
         gl.viewport(0, 0, this.canvas.width, this.canvas.height);
         gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.texture); gl.uniform1i(this.u.tex, 0);
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, this.lutTexture); gl.uniform1i(this.u.lutTex, 1);
+        gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, this.maskTexture); gl.uniform1i(this.u.maskTex, 2);
+        gl.uniform1f(this.u.maskOn, this.hasMask ? 1.0 : 0.0);
+        gl.uniform1f(this.u.fgBright, params.fgBright || 0);
+        gl.uniform1f(this.u.bgDim, params.bgDim || 0);
+        gl.uniform1f(this.u.bgCool, params.bgCool || 0);
         gl.uniform1f(this.u.lutSize, lutStrength > 0 ? this.lutSize : 0);
         gl.uniform1f(this.u.lutStrength, lutStrength);
-        gl.uniform2f(this.u.texelSize, 1.5 / this.texWidth, 1.5 / this.texHeight);
+
+        // FIX #1: Resolution-independent texelSize (1200px preview === 4K export!)
+        const normScale = Math.max(1.0, Math.max(this.texWidth, this.texHeight) / 1200.0);
+        gl.uniform2f(this.u.texelSize, (1.5 * normScale) / this.texWidth, (1.5 * normScale) / this.texHeight);
+        gl.uniform1f(this.u.aspect, this.texWidth / Math.max(1.0, this.texHeight));
         gl.uniform1f(this.u.intensity, intensity);
+
+        // GPU Color Match uniforms
+        const cm = params.gpuColorMatch;
+        if (cm && cm.on && cm.src && cm.ref) {
+          gl.uniform1f(this.u.cmOn, 1.0);
+          gl.uniform3f(this.u.cmSrcMean, cm.src.mL, cm.src.mA, cm.src.mB);
+          gl.uniform3f(this.u.cmSrcStd, cm.src.stdL, cm.src.stdA, cm.src.stdB);
+          gl.uniform3f(this.u.cmRefMean, cm.ref.mL, cm.ref.mA, cm.ref.mB);
+          gl.uniform3f(this.u.cmRefStd, cm.ref.stdL, cm.ref.stdA, cm.ref.stdB);
+          gl.uniform1f(this.u.cmStr, cm.strength);
+        } else {
+          gl.uniform1f(this.u.cmOn, 0.0);
+        }
 
         gl.uniform1f(this.u.exposure, params.exposure); gl.uniform1f(this.u.contrast, params.contrast);
         gl.uniform1f(this.u.highlights, params.highlights); gl.uniform1f(this.u.shadows, params.shadows);
@@ -1533,7 +1852,8 @@
         gl.uniform1f(this.u.tint, params.tint); gl.uniform1f(this.u.sat, params.sat);
         gl.uniform1f(this.u.vibrance, params.vibrance); gl.uniform1f(this.u.clarity, params.clarity);
         gl.uniform1f(this.u.grain, params.grain); gl.uniform1f(this.u.vignette, params.vignette);
-        gl.uniform1f(this.u.glow, params.glow || 0); gl.uniform1f(this.u.leak, params.leak || 0);
+        gl.uniform1f(this.u.glow, params.glow || 0); gl.uniform1f(this.u.halation, params.halation || 0);
+        gl.uniform1f(this.u.ca, params.ca || 0); gl.uniform1f(this.u.leak, params.leak || 0);
         gl.uniform1f(this.u.skinSmooth, params.skinSmooth || 0); gl.uniform1f(this.u.skinWhiten, params.skinWhiten || 0);
         gl.uniform1f(this.u.skinRosy, params.skinRosy || 0); gl.uniform1f(this.u.hdSharpen, params.hdSharpen || 0);
         gl.uniform1fv(this.u.hslHue, new Float32Array(params.hslHue));
@@ -1542,11 +1862,11 @@
         gl.uniform3fv(this.u.shTint, new Float32Array(params.shTint));
         gl.uniform3fv(this.u.hiTint, new Float32Array(params.hiTint));
 
-        // Liquify & Leg Stretch
+        // 20-Slot Liquify (Manual + Auto Face AI)
         const strokes = params.liquifyStrokes || [];
-        const cnt = Math.min(12, strokes.length);
+        const cnt = Math.min(20, strokes.length);
         gl.uniform1i(this.u.liqCount, cnt);
-        const fArr = new Float32Array(24), tArr = new Float32Array(24), rArr = new Float32Array(12), sArr = new Float32Array(12);
+        const fArr = new Float32Array(40), tArr = new Float32Array(40), rArr = new Float32Array(20), sArr = new Float32Array(20);
         for (let i = 0; i < cnt; i++) {
           fArr[i*2] = strokes[i].fx; fArr[i*2+1] = strokes[i].fy;
           tArr[i*2] = strokes[i].tx; tArr[i*2+1] = strokes[i].ty;
@@ -1557,6 +1877,14 @@
         gl.uniform1f(this.u.legStretch, params.legStretch || 0);
         gl.uniform1f(this.u.legStart, params.legStart || 0.58);
 
+        // Face AI Protection Points (eyes/lips)
+        const pPts = params.faceProtectPts || [];
+        const pCnt = Math.min(4, pPts.length);
+        gl.uniform1i(this.u.protCount, pCnt);
+        const pArr = new Float32Array(12);
+        for (let i = 0; i < pCnt; i++) { pArr[i*3] = pPts[i][0]; pArr[i*3+1] = pPts[i][1]; pArr[i*3+2] = pPts[i][2]; }
+        gl.uniform3fv(this.u.protPts, pArr);
+
         // 3D Relighting
         gl.uniform1f(this.u.lightOn, params.light3dOn ? 1.0 : 0.0);
         gl.uniform2f(this.u.lightPos, params.lightX || 0.25, params.lightY || 0.20);
@@ -1565,6 +1893,53 @@
         gl.uniform1f(this.u.lightRad, params.lightRad || 0.55);
 
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+        // Multi-Pass Dual-Kawase Bloom + Red Halation
+        if (needMultiPass) {
+          gl.useProgram(this.kawaseProg);
+          this.bindQuad(this.kawaseProg, true);
+          const uKT = gl.getUniformLocation(this.kawaseProg, 'u_tex');
+          const uKO = gl.getUniformLocation(this.kawaseProg, 'u_offset');
+          const uKTh = gl.getUniformLocation(this.kawaseProg, 'u_thresh');
+
+          // Pass 2: Base -> Half (highlight threshold extract + blur)
+          gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.half.fb);
+          gl.viewport(0, 0, this.fbos.half.w, this.fbos.half.h);
+          gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.fbos.base.tex);
+          gl.uniform1i(uKT, 0);
+          gl.uniform2f(uKO, 2.2 / this.fbos.half.w, 2.2 / this.fbos.half.h);
+          gl.uniform1f(uKTh, 0.48);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+          // Pass 3: Half -> Quarter (wide smooth Pro-Mist spread)
+          gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.quarter.fb);
+          gl.viewport(0, 0, this.fbos.quarter.w, this.fbos.quarter.h);
+          gl.bindTexture(gl.TEXTURE_2D, this.fbos.half.tex);
+          gl.uniform2f(uKO, 3.2 / this.fbos.quarter.w, 3.2 / this.fbos.quarter.h);
+          gl.uniform1f(uKTh, 0.0);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+          // Pass 4: Quarter -> Half (upsample soften)
+          gl.bindFramebuffer(gl.FRAMEBUFFER, this.fbos.half.fb);
+          gl.viewport(0, 0, this.fbos.half.w, this.fbos.half.h);
+          gl.bindTexture(gl.TEXTURE_2D, this.fbos.quarter.tex);
+          gl.uniform2f(uKO, 2.6 / this.fbos.half.w, 2.6 / this.fbos.half.h);
+          gl.uniform1f(uKTh, 0.0);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+
+          // Pass 5: Composite Base + Bloom/Halation to screen canvas
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+          gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+          gl.useProgram(this.compProg);
+          this.bindQuad(this.compProg, true);
+          gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, this.fbos.base.tex);
+          gl.uniform1i(gl.getUniformLocation(this.compProg, 'u_baseTex'), 0);
+          gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, this.fbos.half.tex);
+          gl.uniform1i(gl.getUniformLocation(this.compProg, 'u_bloomTex'), 1);
+          gl.uniform1f(gl.getUniformLocation(this.compProg, 'u_glow'), params.glow || 0);
+          gl.uniform1f(gl.getUniformLocation(this.compProg, 'u_halation'), params.halation || 0);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+        }
       }
     }
 
@@ -1594,6 +1969,8 @@
         grain: Math.max(0, preset.grain + m.grain * 0.0014),
         vignette: Math.max(0, preset.vignette + m.vignette * 0.006),
         glow: Math.max(0, (preset.glow || 0) + m.glow * 0.008 + magic * 0.10),
+        halation: Math.max(0, (m.halation || 0) * 0.01),
+        ca: Math.max(0, (m.ca || 0) * 0.01),
         leak: Math.max(0, (preset.leak || 0) + m.leak * 0.008),
         skinSmooth: Math.max(0, m.skinSmooth * 0.01 + magic * 0.35),
         skinWhiten: Math.max(0, m.skinWhiten * 0.01 + magic * 0.22),
@@ -1602,7 +1979,12 @@
         hslHue: preset.hslHue.map((v, i) => v + state.customHslH[i] * 0.0025),
         hslSat: preset.hslSat.map((v, i) => v + state.customHslS[i] * 0.01),
         hslLum: preset.hslLum.map((v, i) => v + state.customHslL[i] * 0.01),
-        liquifyStrokes: state.liquify.strokes,
+        liquifyStrokes: [...state.liquify.strokes, ...buildAutoFaceWarpStrokes()],
+        faceProtectPts: state.faceAi.protectPts || [],
+        fgBright: (state.cutout.fgBright || 0) * 0.01,
+        bgDim: (state.cutout.bgDim || 0) * 0.01,
+        bgCool: (state.cutout.bgCool || 0) * 0.01,
+        gpuColorMatch: getActiveGpuColorMatch(),
         legStretch: state.leg.stretch,
         legStart: state.leg.startY,
         light3dOn: state.light3d.on,
@@ -1740,18 +2122,60 @@
       }
     }
 
+    function buildAutoFaceWarpStrokes() {
+      const f = state.faceAi;
+      if (!f.scanned || !f.landmarks) return [];
+      const lm = f.landmarks, out = [];
+      const jawL = lm[172], jawR = lm[397], chin = lm[152], noseTip = lm[1], noseL = lm[129], noseR = lm[358];
+      const eyeL = lm[468] || lm[159], eyeR = lm[473] || lm[386];
+      const faceW = Math.max(0.05, Math.hypot(jawR.x - jawL.x, jawR.y - jawL.y));
+      if (f.slim > 1) {
+        const s = (f.slim / 100) * 0.32;
+        out.push({ fx: jawL.x, fy: jawL.y, tx: jawL.x + (noseTip.x - jawL.x) * 0.16, ty: jawL.y - faceW * 0.03, r: faceW * 0.42, s });
+        out.push({ fx: jawR.x, fy: jawR.y, tx: jawR.x + (noseTip.x - jawR.x) * 0.16, ty: jawR.y - faceW * 0.03, r: faceW * 0.42, s });
+        out.push({ fx: chin.x, fy: chin.y, tx: chin.x, ty: chin.y - faceW * 0.07, r: faceW * 0.34, s: s * 0.75 });
+      }
+      if (f.nose > 1) {
+        const s = (f.nose / 100) * 0.35;
+        out.push({ fx: noseL.x, fy: noseL.y, tx: noseL.x + (noseTip.x - noseL.x) * 0.25, ty: noseL.y, r: faceW * 0.18, s });
+        out.push({ fx: noseR.x, fy: noseR.y, tx: noseR.x + (noseTip.x - noseR.x) * 0.25, ty: noseR.y, r: faceW * 0.18, s });
+      }
+      if (f.eye > 1) {
+        const s = (f.eye / 100) * 0.26;
+        out.push({ fx: eyeL.x, fy: eyeL.y, tx: eyeL.x, ty: eyeL.y - faceW * 0.045, r: faceW * 0.16, s });
+        out.push({ fx: eyeR.x, fy: eyeR.y, tx: eyeR.x, ty: eyeR.y - faceW * 0.045, r: faceW * 0.16, s });
+      }
+      return out;
+    }
+
+    function getActiveGpuColorMatch(customSrcStats = null) {
+      const src = customSrcStats || state.cachedSrcLabStats;
+      if (state.colorMatch.active && state.colorMatch.refStats && src) {
+        return { on: true, src, ref: state.colorMatch.refStats, strength: state.colorMatch.strength };
+      }
+      if (state.batchAutoMatch && state.batchRefStats && src && state.batchIdx > 0) {
+        return { on: true, src, ref: state.batchRefStats, strength: 0.72 };
+      }
+      return { on: false };
+    }
+
+    function invalidateGeoCache() { state.geoRev++; }
+
     function renderMain() {
       if (!state.sourceImage) return;
-      const baseSrc = state.healedCanvas || state.sourceImage;
-      let working = applyGeometryTransform(baseSrc, 1200);
-      state.previewCanvasSrc = working;
-
-      let colorSrc = working;
-      if (state.colorMatch.active && state.colorMatch.refStats) {
-        colorSrc = applyColorMatchToCanvas(working, state.colorMatch.refStats, state.colorMatch.strength);
+      const needRebuild = state.cachedGeoRev !== state.geoRev || !state.cachedWorking;
+      if (needRebuild) {
+        const baseSrc = state.healedCanvas || state.sourceImage;
+        const working = applyGeometryTransform(baseSrc, 1200);
+        state.cachedWorking = working;
+        state.previewCanvasSrc = working;
+        state.cachedSrcLabStats = computeLabStats(working);
+        state.cachedGeoRev = state.geoRev;
       }
-      const w = colorSrc.width, h = colorSrc.height;
-      const compSrc = buildCompositeLayers(colorSrc, w, h, state.cutout.maskCanvas);
+      const working = state.cachedWorking;
+      const w = working.width, h = working.height;
+      const needBlurOrTextBehind = state.cutout.maskCanvas && (state.cutout.bgBlur > 0 || (state.text.behindSubject && state.text.content.trim()));
+      const compSrc = needBlurOrTextBehind ? buildCompositeLayers(working, w, h, state.cutout.maskCanvas) : working;
       const preset = getActivePreset();
       const params = getCombinedParams(preset);
 
@@ -1759,7 +2183,10 @@
         if (state.cubeLut.active && state.cubeLut.stripCanvas) {
           engine.uploadLut(state.cubeLut.stripCanvas, state.cubeLut.size);
         }
-        engine.uploadSource(compSrc);
+        engine.uploadMask(state.cutout.maskCanvas);
+        if (needRebuild || needBlurOrTextBehind) {
+          engine.uploadSource(compSrc);
+        }
         engine.render(params, state.intensity, state.cubeLut.active ? state.cubeLut.strength : 0);
       }
       const leftCompareSrc = (state.splitMode && state.pinnedA && state.pinnedA.canvas) ? state.pinnedA.canvas : working;
@@ -1798,8 +2225,37 @@
       const ctx = interactOverlay.getContext('2d');
       ctx.clearRect(0, 0, interactOverlay.width, interactOverlay.height);
       const showLight = state.activeTab === 'effects' && state.effSubTab === 'light' && state.light3d.on;
-      const show = state.eraser.active || state.liquify.active || showLight;
+      const showSZ = state.safeZone && state.safeZone !== 'none';
+      const show = state.eraser.active || state.liquify.active || showLight || showSZ;
       interactOverlay.classList.toggle('hidden', !show);
+      if (showSZ) {
+        const ow = interactOverlay.width, oh = interactOverlay.height;
+        ctx.save();
+        if (state.safeZone === 'tiktok') {
+          ctx.fillStyle = 'rgba(244, 63, 94, 0.22)';
+          ctx.strokeStyle = 'rgba(244, 63, 94, 0.75)';
+          ctx.lineWidth = Math.max(2, ow * 0.004);
+          ctx.setLineDash([8, 6]);
+          // Right-side TikTok engagement buttons zone
+          ctx.fillRect(ow * 0.80, oh * 0.42, ow * 0.20, oh * 0.42);
+          ctx.strokeRect(ow * 0.80, oh * 0.42, ow * 0.20, oh * 0.42);
+          // Bottom TikTok caption & sound bar zone
+          ctx.fillRect(0, oh * 0.82, ow, oh * 0.18);
+          ctx.strokeRect(0, oh * 0.82, ow, oh * 0.18);
+          ctx.setLineDash([]);
+          ctx.fillStyle = '#fff'; ctx.font = `700 ${Math.max(12, Math.round(ow * 0.028))}px Inter, sans-serif`;
+          ctx.textAlign = 'center'; ctx.fillText('VÙNG CHE CAPTION TIKTOK', ow * 0.5, oh * 0.91);
+        } else if (state.safeZone === 'locket') {
+          const side = Math.min(ow, oh) * 0.90;
+          const sx = (ow - side) / 2, sy = (oh - side) / 2, rad = side * 0.18;
+          ctx.strokeStyle = 'rgba(250, 204, 21, 0.9)';
+          ctx.lineWidth = Math.max(3, ow * 0.006);
+          ctx.beginPath(); ctx.roundRect(sx, sy, side, side, rad); ctx.stroke();
+          ctx.fillStyle = '#fde047'; ctx.font = `700 ${Math.max(12, Math.round(ow * 0.028))}px Inter, sans-serif`;
+          ctx.textAlign = 'center'; ctx.fillText('KHUNG LOCKET 1:1', ow * 0.5, sy + side - Math.max(16, oh * 0.03));
+        }
+        ctx.restore();
+      }
       if (showLight) {
         const lx = state.light3d.x * interactOverlay.width;
         const ly = state.light3d.y * interactOverlay.height;
@@ -1892,7 +2348,7 @@
         sctx.fillRect(0, 0, rad * 2, rad * 2);
         ctx.drawImage(stampC, dx - rad, dy - rad);
       });
-      renderMain();
+      invalidateGeoCache(); renderMain();
       showToast('Đã xóa sạch chi tiết!');
     }
 
@@ -1926,7 +2382,7 @@
         sctx.fillStyle = grad; sctx.fillRect(0, 0, rad*2, rad*2);
         ctx.drawImage(stampC, dx - rad, dy - rad);
       });
-      renderMain();
+      invalidateGeoCache(); renderMain();
       showToast('Đã nhân bản vùng sạch!');
     }
 
@@ -2090,7 +2546,9 @@
         }
       } catch (e) {}
 
+      const isIOS = /iPad|iPhone|iPod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
       try {
+        if (isIOS) throw new Error('Skip heavy WASM on iOS Safari');
         badge.textContent = 'Tải AI...'; status.textContent = 'Đang tải RMBG-1.4 (~45MB lần đầu)...';
         const { AutoModel, AutoProcessor, RawImage, env } = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.1.2/dist/transformers.min.mjs');
         env.allowLocalModels = false;
@@ -2172,6 +2630,9 @@
 
     function loadImageElement(img, toastMsg) {
       state.sourceImage = img; state.healedCanvas = null; state.eraserHistory = [];
+      state.faceAi = { scanned: false, slim: 0, eye: 0, nose: 0, landmarks: null, box: null, protectPts: [] };
+      const fb = document.getElementById('faceAiBadge'); if (fb) fb.textContent = 'Chưa quét';
+      invalidateGeoCache();
       state.thumbCache = {}; state.cutout.maskCanvas = null; state.liquify.strokes = [];
       state.pinnedA = null;
       resetZoom();
@@ -2200,7 +2661,8 @@
       if (state.batchImages.length <= 1) { bar.classList.add('hidden'); btn.classList.add('hidden'); return; }
       bar.classList.remove('hidden'); btn.classList.remove('hidden');
       document.getElementById('batchExportLabel').textContent = `Xuất hàng loạt ${state.batchImages.length} ảnh`;
-      bar.innerHTML = state.batchImages.map((b, i) => `
+      const syncBtn = `<button type="button" id="btnBatchAutoMatch" class="shrink-0 h-10 px-2.5 rounded-lg border text-[10px] font-bold transition flex flex-col items-center justify-center leading-tight ${state.batchAutoMatch ? 'bg-emerald-500/25 border-emerald-400 text-emerald-300' : 'bg-white/5 border-white/15 text-zinc-300'}"><span>Đồng bộ</span><span>${state.batchAutoMatch ? 'ĐANG BẬT' : 'theo ảnh 1'}</span></button>`;
+      bar.innerHTML = syncBtn + state.batchImages.map((b, i) => `
         <button type="button" data-batch-idx="${i}" class="batch-item relative shrink-0 w-10 h-10 rounded-lg overflow-hidden border-2 transition ${i === state.batchIdx ? 'border-sky-400 scale-105' : 'border-white/20 opacity-75'}">
           <img src="${b.thumb}" alt="Batch ${i+1}" class="w-full h-full object-cover" />
           <span class="absolute bottom-0 right-0 bg-black/75 text-[9px] font-bold px-1 text-white">${i+1}</span>
@@ -2332,6 +2794,9 @@
     function switchDockTab(tab) {
       state.activeTab = tab;
       setInteractiveTool(null);
+      if (tab !== 'effects' && (state.manual.glow === 0 && state.manual.halation === 0) && engine.ready) {
+        engine.disposeFBOs();
+      }
       document.querySelectorAll('.dock-tab').forEach(btn => {
         const active = btn.dataset.tab === tab;
         btn.className = `dock-tab flex-1 h-11 rounded-xl flex flex-col items-center justify-center gap-0.5 transition ${active?'text-sky-400 bg-sky-500/10 font-semibold':'text-zinc-400 hover:text-zinc-200 font-medium'}`;
@@ -2352,27 +2817,34 @@
     // =========================================================================
     // 11. FULL-RES SINGLE & BATCH EXPORT
     // =========================================================================
-    async function renderImageToBlob(imgSource, useLocalEdits = true) {
+    async function renderImageToBlob(imgSource, useLocalEdits = true, batchItemIdx = -1) {
       const baseSrc = (useLocalEdits && state.healedCanvas) ? state.healedCanvas : imgSource;
-      let fullSrc = applyGeometryTransform(baseSrc, 4096);
-      let colorSrc = fullSrc;
-      if (state.colorMatch.active && state.colorMatch.refStats) {
-        colorSrc = applyColorMatchToCanvas(fullSrc, state.colorMatch.refStats, state.colorMatch.strength);
-      }
-      const w = colorSrc.width, h = colorSrc.height;
-      const compSrc = buildCompositeLayers(colorSrc, w, h, useLocalEdits ? state.cutout.maskCanvas : null);
+      const fullSrc = applyGeometryTransform(baseSrc, 4096);
+      const w = fullSrc.width, h = fullSrc.height;
+      const maskToUse = useLocalEdits ? state.cutout.maskCanvas : null;
+      const needComp = maskToUse && (state.cutout.bgBlur > 0 || (state.text.behindSubject && state.text.content.trim()));
+      const compSrc = needComp ? buildCompositeLayers(fullSrc, w, h, maskToUse) : fullSrc;
 
       const offGL = document.createElement('canvas'); offGL.width = w; offGL.height = h;
       const offEng = new WebGLColorEngine(offGL);
-      const preset = getActivePreset(), params = getCombinedParams(preset);
+      const preset = getActivePreset();
+      const params = getCombinedParams(preset);
+      if (batchItemIdx > 0 && state.batchAutoMatch && state.batchRefStats) {
+        params.gpuColorMatch = { on: true, src: computeLabStats(fullSrc), ref: state.batchRefStats, strength: 0.72 };
+      } else if (state.colorMatch.active && state.colorMatch.refStats) {
+        params.gpuColorMatch = { on: true, src: computeLabStats(fullSrc), ref: state.colorMatch.refStats, strength: state.colorMatch.strength };
+      }
       if (offEng.ready) {
         if (state.cubeLut.active && state.cubeLut.stripCanvas) offEng.uploadLut(state.cubeLut.stripCanvas, state.cubeLut.size);
+        offEng.uploadMask(maskToUse);
         offEng.uploadSource(compSrc);
         offEng.render(params, state.intensity, state.cubeLut.active ? state.cubeLut.strength : 0);
       } else offGL.getContext('2d').drawImage(compSrc, 0, 0, w, h);
 
       const finalOut = document.createElement('canvas');
       drawFinalFrameAndOverlay(finalOut, offGL, fullSrc, w, h, { showOrig: false, split: -1 });
+      // Auto-dispose offscreen 4K WebGL context to free iOS Safari RAM immediately!
+      offEng.disposeAll();
       const mime = state.exportFormat === 'png' ? 'image/png' : 'image/jpeg';
       const ext = state.exportFormat === 'png' ? 'png' : 'jpg';
       const blob = await new Promise(res => finalOut.toBlob(res, mime, state.exportFormat === 'png' ? undefined : 0.95));
@@ -2404,7 +2876,7 @@
       showToast(`Đang xuất ${state.batchImages.length} ảnh...`);
       const files = [], preset = getActivePreset();
       for (let i = 0; i < state.batchImages.length; i++) {
-        const { blob, mime, ext } = await renderImageToBlob(state.batchImages[i].img, i === state.batchIdx);
+        const { blob, mime, ext } = await renderImageToBlob(state.batchImages[i].img, i === state.batchIdx, i);
         if (blob) files.push(new File([blob], `ToneLab_${preset.id}_${i+1}.${ext}`, { type: mime }));
       }
       if (navigator.share && navigator.canShare && navigator.canShare({ files })) {
@@ -2812,10 +3284,10 @@
     displayCanvas.addEventListener('pointercancel', finishPointerDraw);
 
     // Crop, Rotate, Frame, EXIF, Date Stamp
-    document.getElementById('cropRatioGrid').addEventListener('click', e => { const b = e.target.closest('.crop-btn'); if (!b) return; state.transform.cropRatio = b.dataset.crop; renderCropAndFrameUI(); renderMain(); });
-    document.getElementById('btnImgRotate90').addEventListener('click', () => { state.transform.rotate90 = (state.transform.rotate90 + 90) % 360; renderMain(); });
-    document.getElementById('btnImgFlipH').addEventListener('click', () => { state.transform.flipH = !state.transform.flipH; renderMain(); });
-    document.getElementById('btnImgFlipV').addEventListener('click', () => { state.transform.flipV = !state.transform.flipV; renderMain(); });
+    document.getElementById('cropRatioGrid').addEventListener('click', e => { const b = e.target.closest('.crop-btn'); if (!b) return; state.transform.cropRatio = b.dataset.crop; invalidateGeoCache(); renderCropAndFrameUI(); renderMain(); pushHistorySnapshot(true); });
+    document.getElementById('btnImgRotate90').addEventListener('click', () => { state.transform.rotate90 = (state.transform.rotate90 + 90) % 360; invalidateGeoCache(); renderMain(); pushHistorySnapshot(true); });
+    document.getElementById('btnImgFlipH').addEventListener('click', () => { state.transform.flipH = !state.transform.flipH; invalidateGeoCache(); renderMain(); pushHistorySnapshot(true); });
+    document.getElementById('btnImgFlipV').addEventListener('click', () => { state.transform.flipV = !state.transform.flipV; invalidateGeoCache(); renderMain(); pushHistorySnapshot(true); });
     document.getElementById('frameStyleGrid').addEventListener('click', e => { const b = e.target.closest('.frame-btn'); if (!b) return; state.frameStyle = b.dataset.frame; renderCropAndFrameUI(); renderMain(); });
     document.getElementById('inputExifText').addEventListener('input', e => { state.exifText = e.target.value; renderMain(); });
     document.getElementById('toggleDateStamp').addEventListener('change', e => { state.dateStampOn = e.target.checked; renderMain(); });
@@ -2936,7 +3408,11 @@
         transform: Object.assign({}, state.transform),
         frameStyle: state.frameStyle,
         dateStampOn: state.dateStampOn,
-        dateStampText: state.dateStampText
+        dateStampText: state.dateStampText,
+        liquifyStrokes: state.liquify.strokes.map(st => Object.assign({}, st)),
+        leg: Object.assign({}, state.leg),
+        cutoutVals: { bgBlur: state.cutout.bgBlur, bgDim: state.cutout.bgDim, fgBright: state.cutout.fgBright, bgCool: state.cutout.bgCool },
+        faceVals: { slim: state.faceAi.slim, eye: state.faceAi.eye, nose: state.faceAi.nose }
       });
     }
 
@@ -2981,6 +3457,25 @@
       state.frameStyle = s.frameStyle;
       state.dateStampOn = s.dateStampOn;
       state.dateStampText = s.dateStampText;
+      if (Array.isArray(s.liquifyStrokes)) state.liquify.strokes = s.liquifyStrokes;
+      if (s.leg) {
+        state.leg = Object.assign({}, s.leg);
+        document.getElementById('sliderLegStretch').value = Math.round(state.leg.stretch * 100);
+        document.getElementById('valLegStretch').textContent = Math.round(state.leg.stretch * 100) + '%';
+      }
+      if (s.cutoutVals) {
+        Object.assign(state.cutout, s.cutoutVals);
+        document.getElementById('sliderBgBlur').value = state.cutout.bgBlur; document.getElementById('valBgBlur').textContent = state.cutout.bgBlur + '%';
+        document.getElementById('sliderBgDim').value = state.cutout.bgDim; document.getElementById('valBgDim').textContent = state.cutout.bgDim + '%';
+        document.getElementById('sliderFgBright').value = state.cutout.fgBright; document.getElementById('valFgBright').textContent = state.cutout.fgBright + '%';
+        document.getElementById('sliderBgCool').value = state.cutout.bgCool; document.getElementById('valBgCool').textContent = state.cutout.bgCool + '%';
+      }
+      if (s.faceVals) {
+        state.faceAi.slim = s.faceVals.slim; state.faceAi.eye = s.faceVals.eye; state.faceAi.nose = s.faceVals.nose;
+        document.getElementById('sliderFaceSlim').value = state.faceAi.slim; document.getElementById('valFaceSlim').textContent = state.faceAi.slim;
+        document.getElementById('sliderFaceEye').value = state.faceAi.eye; document.getElementById('valFaceEye').textContent = state.faceAi.eye;
+        document.getElementById('sliderFaceNose').value = state.faceAi.nose; document.getElementById('valFaceNose').textContent = state.faceAi.nose;
+      }
 
       document.getElementById('sliderIntensity').value = Math.round(state.intensity * 100);
       document.getElementById('valIntensity').textContent = Math.round(state.intensity * 100) + '%';
@@ -3180,6 +3675,274 @@
     stageEl.addEventListener('touchend', e => {
       if (e.touches.length < 2) pinchStartDist = 0;
     }, { passive: true });
+
+
+    // =========================================================================
+    // V6 LAZY-CONTAINERS: PORTRAIT AI (468-PT + WINK), LOCAL MASK, VIDEO & SAFE-ZONE
+    // =========================================================================
+
+    // Container 2A: Lazy MediaPipe Face Landmarker (468 points, ~3MB, auto-disposes after scan!)
+    async function runLazyFaceScan() {
+      if (!state.previewCanvasSrc) return false;
+      const btn = document.getElementById('btnScanFaceAi'), badge = document.getElementById('faceAiBadge');
+      btn.disabled = true; btn.classList.add('opacity-60');
+      badge.textContent = 'Đang quét...';
+      try {
+        const vision = await import('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/vision_bundle.mjs');
+        const fileset = await vision.FilesetResolver.forVisionTasks('https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14/wasm');
+        const landmarker = await vision.FaceLandmarker.createFromOptions(fileset, {
+          baseOptions: {
+            modelAssetPath: 'https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task',
+            delegate: 'CPU'
+          },
+          runningMode: 'IMAGE',
+          numFaces: 1
+        });
+        const res = landmarker.detect(state.previewCanvasSrc);
+        // Immediately dispose WASM model to keep iOS Safari RAM clean!
+        landmarker.close();
+        if (res && res.faceLandmarks && res.faceLandmarks.length) {
+          const lm = res.faceLandmarks[0];
+          let minX = 1, maxX = 0, minY = 1, maxY = 0;
+          lm.forEach(p => { if (p.x < minX) minX = p.x; if (p.x > maxX) maxX = p.x; if (p.y < minY) minY = p.y; if (p.y > maxY) maxY = p.y; });
+          const eyeL = lm[159], eyeR = lm[386], lip = lm[13], fw = Math.max(0.05, maxX - minX);
+          state.faceAi.landmarks = lm;
+          state.faceAi.box = { x: minX, y: minY, w: maxX - minX, h: maxY - minY };
+          state.faceAi.protectPts = [
+            [eyeL.x, eyeL.y, fw * 0.14],
+            [eyeR.x, eyeR.y, fw * 0.14],
+            [lip.x, lip.y, fw * 0.16]
+          ];
+          state.faceAi.scanned = true;
+          badge.textContent = 'Đã nhận 468 điểm';
+          badge.className = 'text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300';
+          showToast('Đã nhận diện 468 điểm khuôn mặt & khóa mắt/môi!');
+          renderMain();
+          return true;
+        } else {
+          badge.textContent = 'Không thấy mặt';
+          showToast('Không tìm thấy khuôn mặt rõ trong ảnh này');
+          return false;
+        }
+      } catch (err) {
+        badge.textContent = 'Lỗi tải AI';
+        showToast('Không tải được Face AI lúc này (cần kết nối mạng)');
+        return false;
+      } finally {
+        btn.disabled = false; btn.classList.remove('opacity-60');
+      }
+    }
+
+    document.getElementById('btnScanFaceAi').addEventListener('click', runLazyFaceScan);
+    ['Slim', 'Eye', 'Nose'].forEach(k => {
+      const keyLower = k.toLowerCase();
+      document.getElementById('sliderFace' + k).addEventListener('input', async e => {
+        const v = parseInt(e.target.value, 10);
+        state.faceAi[keyLower] = v;
+        document.getElementById('valFace' + k).textContent = v;
+        if (!state.faceAi.scanned && v > 0) {
+          await runLazyFaceScan();
+        }
+        renderMain(); pushHistorySnapshot(false);
+      });
+    });
+
+    // Container 2B: Nét AI (Wink Mode) — Face-ROI Multi-Pass Edge-Guided Detail Reconstruction (0đ, unlimited)
+    document.getElementById('btnWinkFaceRestore').addEventListener('click', async () => {
+      if (!state.sourceImage) return;
+      const btn = document.getElementById('btnWinkFaceRestore');
+      btn.disabled = true; btn.textContent = 'Đang xử lý...';
+      showToast('Đang tái tạo độ nét vùng mặt (Wink Mode)...');
+      try {
+        if (!state.faceAi.scanned) {
+          await runLazyFaceScan();
+        }
+        const hc = ensureHealedCanvas();
+        pushEraserUndo(hc);
+        const W = hc.width, H = hc.height;
+        const box = state.faceAi.box || { x: 0.22, y: 0.14, w: 0.56, h: 0.56 };
+        const pad = 0.08;
+        const rx = Math.max(0, Math.floor((box.x - pad) * W));
+        const ry = Math.max(0, Math.floor((box.y - pad) * H));
+        const rw = Math.min(W - rx, Math.ceil((box.w + pad * 2) * W));
+        const rh = Math.min(H - ry, Math.ceil((box.h + pad * 2) * H));
+        if (rw < 16 || rh < 16) { showToast('Vùng mặt quá nhỏ'); return; }
+
+        // Extract Face ROI, run 2-pass halo-free local contrast + edge-guided micro-sharpening
+        const roi = document.createElement('canvas'); roi.width = rw; roi.height = rh;
+        const rctx = roi.getContext('2d');
+        rctx.drawImage(hc, rx, ry, rw, rh, 0, 0, rw, rh);
+        const imgD = rctx.getImageData(0, 0, rw, rh);
+        const src = new Uint8ClampedArray(imgD.data), dst = imgD.data;
+
+        for (let y = 1; y < rh - 1; y++) {
+          for (let x = 1; x < rw - 1; x++) {
+            const idx = (y * rw + x) * 4;
+            for (let ch = 0; ch < 3; ch++) {
+              const c0 = src[idx + ch];
+              const avg = (
+                src[((y-1)*rw + x)*4 + ch] + src[((y+1)*rw + x)*4 + ch] +
+                src[(y*rw + (x-1))*4 + ch] + src[(y*rw + (x+1))*4 + ch]
+              ) * 0.25;
+              const diff = c0 - avg;
+              // Edge-guided boost: suppresses flat-skin noise (<4) while crisping eyes/lashes/lips
+              const boost = Math.abs(diff) > 3.5 ? Math.tanh(diff / 22.0) * 26.0 : diff * 0.25;
+              dst[idx + ch] = Math.max(0, Math.min(255, Math.round(c0 + boost * 0.82)));
+            }
+          }
+        }
+        rctx.putImageData(imgD, 0, 0);
+
+        // Soft elliptical feather blend back onto healedCanvas
+        const feather = document.createElement('canvas'); feather.width = rw; feather.height = rh;
+        const fctx = feather.getContext('2d');
+        fctx.drawImage(roi, 0, 0);
+        fctx.globalCompositeOperation = 'destination-in';
+        const grad = fctx.createRadialGradient(rw/2, rh/2, Math.min(rw, rh)*0.22, rw/2, rh/2, Math.max(rw, rh)*0.5);
+        grad.addColorStop(0, 'rgba(0,0,0,1)');
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        fctx.fillStyle = grad; fctx.fillRect(0, 0, rw, rh);
+
+        hc.getContext('2d').drawImage(feather, rx, ry);
+        invalidateGeoCache();
+        renderMain();
+        showToast('Đã làm nét AI vùng mặt xong! ✨');
+      } finally {
+        btn.disabled = false; btn.textContent = 'Làm nét AI';
+      }
+    });
+
+    // Container 3: Local Subject / Background Sliders
+    document.getElementById('sliderFgBright').addEventListener('input', e => {
+      state.cutout.fgBright = parseInt(e.target.value, 10);
+      document.getElementById('valFgBright').textContent = (state.cutout.fgBright > 0 ? '+' : '') + state.cutout.fgBright + '%';
+      if (!state.cutout.maskCanvas) showToast('Bấm "Tách ngay" trước để chỉnh riêng chủ thể');
+      renderMain(); pushHistorySnapshot(false);
+    });
+    document.getElementById('sliderBgCool').addEventListener('input', e => {
+      state.cutout.bgCool = parseInt(e.target.value, 10);
+      document.getElementById('valBgCool').textContent = state.cutout.bgCool + '%';
+      if (!state.cutout.maskCanvas) showToast('Bấm "Tách ngay" trước để chỉnh riêng hậu cảnh');
+      renderMain(); pushHistorySnapshot(false);
+    });
+
+    // Container 4A: Safe-Zone Overlay Toggle (TikTok 9:16 / Locket 1:1)
+    document.getElementById('safeZoneBar').addEventListener('click', e => {
+      const b = e.target.closest('.sz-btn'); if (!b) return;
+      state.safeZone = b.dataset.sz;
+      document.querySelectorAll('.sz-btn').forEach(x => {
+        const on = x.dataset.sz === state.safeZone;
+        x.className = `sz-btn px-2 py-0.5 rounded-md border text-[10px] font-semibold ${on ? 'bg-sky-500/20 border-sky-400 text-sky-300' : 'bg-white/5 border-white/10 text-zinc-300'}`;
+      });
+      drawInteractHelpers();
+      showToast(state.safeZone === 'none' ? 'Đã tắt lưới Safe-Zone' : `Đã bật lưới ${b.textContent}`);
+    });
+
+    // Container 4B: Batch Auto-Match Toggle (inside batchBar delegation)
+    document.getElementById('batchBar').addEventListener('click', e => {
+      const syncBtn = e.target.closest('#btnBatchAutoMatch');
+      if (!syncBtn) return;
+      e.stopPropagation();
+      state.batchAutoMatch = !state.batchAutoMatch;
+      if (state.batchAutoMatch && state.batchImages.length > 0) {
+        state.batchRefStats = computeLabStats(state.batchImages[0].img);
+        showToast('Đã bật đồng bộ ánh sáng & màu cả bộ theo Ảnh 1! ✨');
+      } else {
+        showToast('Đã tắt đồng bộ màu cả bộ');
+      }
+      renderBatchBar(); renderMain();
+    });
+
+    // Container 4C: 1-Tap Before/After Video Export (4 seconds, 1080p max, MediaRecorder)
+    async function exportBeforeAfterVideo() {
+      if (!state.sourceImage || !displayCanvas.width) return;
+      if (typeof MediaRecorder === 'undefined' || !HTMLCanvasElement.prototype.captureStream) {
+        showToast('Trình duyệt này chưa hỗ trợ ghi video trực tiếp');
+        return;
+      }
+      const btn = document.getElementById('btnExportVideo');
+      btn.disabled = true; btn.classList.add('opacity-60');
+      showToast('Đang quay Video Before/After (4 giây)...');
+
+      const origImg = state.cachedWorking || state.previewCanvasSrc;
+      const afterImg = engine.ready ? glOffCanvas : displayCanvas;
+      const maxD = 1080;
+      let vw = displayCanvas.width, vh = displayCanvas.height;
+      if (Math.max(vw, vh) > maxD) { const s = maxD / Math.max(vw, vh); vw = Math.round(vw * s); vh = Math.round(vh * s); }
+      vw = vw % 2 === 0 ? vw : vw - 1;
+      vh = vh % 2 === 0 ? vh : vh - 1;
+
+      const vc = document.createElement('canvas'); vc.width = vw; vc.height = vh;
+      const vctx = vc.getContext('2d');
+      const presetName = getActivePreset().name;
+
+      const mimeTypes = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm'];
+      const chosenMime = mimeTypes.find(m => MediaRecorder.isTypeSupported(m)) || '';
+      const stream = vc.captureStream(30);
+      const recorder = chosenMime ? new MediaRecorder(stream, { mimeType: chosenMime, videoBitsPerSecond: 4500000 }) : new MediaRecorder(stream);
+      const chunks = [];
+      recorder.ondataavailable = ev => { if (ev.data && ev.data.size > 0) chunks.push(ev.data); };
+
+      const donePromise = new Promise(resolve => {
+        recorder.onstop = () => resolve(new Blob(chunks, { type: chosenMime || 'video/mp4' }));
+      });
+      recorder.start();
+
+      const totalFrames = 120; // 4s at 30fps
+      for (let f = 0; f <= totalFrames; f++) {
+        const t = f / totalFrames;
+        // Smooth ease sweep: 0.15s hold -> sweep right to left -> hold After
+        let splitX = 1.0;
+        if (t < 0.12) splitX = 1.0;
+        else if (t < 0.65) {
+          const p = (t - 0.12) / 0.53;
+          const ease = p < 0.5 ? 2*p*p : 1 - Math.pow(-2*p + 2, 2)/2;
+          splitX = 1.0 - ease;
+        } else splitX = 0.0;
+
+        vctx.clearRect(0, 0, vw, vh);
+        vctx.drawImage(afterImg, 0, 0, vw, vh);
+        if (splitX > 0.002) {
+          vctx.save(); vctx.beginPath(); vctx.rect(0, 0, vw * splitX, vh); vctx.clip();
+          vctx.drawImage(origImg, 0, 0, vw, vh); vctx.restore();
+          vctx.fillStyle = '#ffffff'; vctx.fillRect(vw * splitX - 2, 0, 4, vh);
+        }
+        // Preset badge & TikTok watermark
+        const fs = Math.max(16, Math.round(vw * 0.032));
+        vctx.fillStyle = 'rgba(9,9,12,0.72)';
+        vctx.beginPath(); vctx.roundRect(vw * 0.04, vh * 0.04, vw * 0.56, fs * 2.0, fs); vctx.fill();
+        vctx.fillStyle = '#38bdf8'; vctx.font = `800 ${fs}px Inter, sans-serif`;
+        vctx.textAlign = 'left'; vctx.textBaseline = 'middle';
+        vctx.fillText(`ToneLab • ${presetName.slice(0, 18)}`, vw * 0.07, vh * 0.04 + fs);
+
+        vctx.fillStyle = 'rgba(255,255,255,0.88)';
+        vctx.font = `700 ${Math.max(13, Math.round(vw * 0.025))}px Inter, sans-serif`;
+        vctx.textAlign = 'right';
+        vctx.fillText('TikTok @v.truongg09127', vw * 0.96, vh * 0.95);
+
+        await new Promise(r => setTimeout(r, 30));
+      }
+
+      recorder.stop();
+      const blob = await donePromise;
+      const ext = (chosenMime && chosenMime.includes('webm')) ? 'webm' : 'mp4';
+      const fname = `ToneLab_BeforeAfter_${getActivePreset().id}.${ext}`;
+      btn.disabled = false; btn.classList.remove('opacity-60');
+
+      if (navigator.share && navigator.canShare) {
+        const file = new File([blob], fname, { type: blob.type });
+        if (navigator.canShare({ files: [file] })) {
+          try { await navigator.share({ files: [file], title: `ToneLab Before/After • ${presetName}` }); document.getElementById('exportModal').classList.add('hidden'); showToast('Đã xuất Video Before/After!'); return; }
+          catch (e) { if (e && e.name === 'AbortError') return; }
+        }
+      }
+      const url = URL.createObjectURL(blob), a = document.createElement('a');
+      a.href = url; a.download = fname; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      document.getElementById('exportModal').classList.add('hidden');
+      showToast(`Đã tải Video Before/After (.${ext.toUpperCase()})!`);
+    }
+    document.getElementById('btnExportVideo').addEventListener('click', exportBeforeAfterVideo);
 
     // =========================================================================
     // 13. INIT
