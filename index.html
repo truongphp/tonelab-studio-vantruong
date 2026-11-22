@@ -45,12 +45,20 @@
     }
     .split-handle { touch-action: none; user-select: none; }
     .touch-draw { cursor: crosshair; touch-action: none; }
+    .safe-header {
+      padding-top: env(safe-area-inset-top, 0px);
+      min-height: calc(3rem + env(safe-area-inset-top, 0px));
+    }
+    .safe-nav {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      min-height: calc(3.5rem + env(safe-area-inset-bottom, 0px));
+    }
   </style>
 </head>
 <body class="flex flex-col h-[100dvh] w-full select-none">
 
   <!-- Top Brand & Action Header -->
-  <header class="shrink-0 h-12 px-2.5 sm:px-3.5 bg-[#101015] border-b border-white/10 flex items-center justify-between gap-1.5 z-20">
+  <header class="safe-header shrink-0 px-2.5 sm:px-3.5 pb-1 bg-[#101015] border-b border-white/10 flex items-center justify-between gap-1.5 z-20">
     <button id="btnOpenCreator" type="button" title="Kênh TikTok & Liên hệ tác giả" class="flex items-center gap-2 min-w-0 text-left rounded-xl pr-1.5 py-0.5 hover:bg-white/5 active:scale-95 transition">
       <div class="relative w-8 h-8 rounded-full bg-white p-0.5 border border-sky-400/60 shadow-md shrink-0">
         <img src="https://i.ibb.co/sJmwb3WL/IMG-1730.jpg" alt="Shin Logo" class="w-full h-full object-cover rounded-full" />
@@ -152,7 +160,7 @@
     </section>
 
     <!-- Ultra Control Dock -->
-    <aside class="shrink-0 h-[44dvh] lg:h-full lg:w-[420px] xl:w-[450px] bg-[#121217] border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col min-h-0 z-10">
+    <aside class="shrink-0 h-[41dvh] lg:h-full lg:w-[420px] xl:w-[450px] bg-[#121217] border-t lg:border-t-0 lg:border-l border-white/10 flex flex-col min-h-0 z-10">
       <div class="flex-1 min-h-0 flex flex-col overflow-hidden">
 
         <!-- TAB 1: TÔNG MÀU + HÚT MÀU + .XMP/.CUBE + THẺ QR -->
@@ -557,7 +565,7 @@
       </div>
 
       <!-- Bottom 6-Tab Navigation Dock -->
-      <nav class="shrink-0 h-14 px-1 bg-[#0d0d11] border-t border-white/10 flex items-center justify-around gap-0.5">
+      <nav class="safe-nav shrink-0 px-1 pt-1 bg-[#0d0d11] border-t border-white/10 flex items-center justify-around gap-0.5">
         <button data-tab="tone" type="button" class="dock-tab flex-1 h-11 rounded-xl flex flex-col items-center justify-center gap-0.5 text-sky-400 bg-sky-500/10 transition">
           <i data-lucide="palette" class="w-4 h-4"></i><span class="text-[9.5px] font-semibold">Tông Màu</span>
         </button>
